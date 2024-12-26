@@ -91,29 +91,13 @@ export function LeadForm() {
     setSubmitError(null)
     
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_LEAD_API_URL
-      if (!apiUrl) {
-        throw new Error('API URL is not configured')
-      }
-
-      // Ensure we're using HTTPS and the correct endpoint
-      const url = new URL(apiUrl)
-      url.protocol = 'https:'
-
-      console.log("[LeadForm] Sending POST request to API:", url.toString())
-      const response = await fetch(url, {
+      console.log("[LeadForm] Sending POST request to local API")
+      const response = await fetch('/api/leads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
         },
-        // Remove CORS mode and credentials to simplify the request
-        body: JSON.stringify({
-          ...values,
-          // Add any additional metadata needed by the API
-          source: 'website',
-          timestamp: new Date().toISOString(),
-        }),
+        body: JSON.stringify(values),
       })
 
       console.log("[LeadForm] Received API response:", {
