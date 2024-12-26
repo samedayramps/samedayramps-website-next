@@ -4,11 +4,19 @@ import { useEffect, useRef, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Loader } from "@googlemaps/js-api-loader"
 
 interface PlacesAutocompleteProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onPlaceSelect: (place: google.maps.places.PlaceResult) => void
   className?: string
 }
+
+// Create a singleton loader instance
+const loader = new Loader({
+  apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+  version: "weekly",
+  libraries: ["places"]
+})
 
 export function PlacesAutocomplete({ 
   onPlaceSelect,
@@ -17,34 +25,65 @@ export function PlacesAutocomplete({
 }: PlacesAutocompleteProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null)
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
 
   useEffect(() => {
-    if (!inputRef.current || autocomplete) return
+    let mounted = true
 
-    const autocompleteInstance = new google.maps.places.Autocomplete(inputRef.current, {
-      componentRestrictions: { country: "us" },
-      fields: ["formatted_address", "geometry"],
-      types: ["address"],
-    })
+    const initializeAutocomplete = async () => {
+      try {
+        if (!inputRef.current) return
 
-    autocompleteInstance.addListener("place_changed", () => {
-      const place = autocompleteInstance.getPlace()
-      if (place) {
-        onPlaceSelect(place)
+        // Load the Google Maps script
+        await loader.load()
+        
+        if (!mounted) return
+
+        // Initialize autocomplete
+        autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
+          componentRestrictions: { country: "us" },
+          fields: ["formatted_address", "geometry", "address_components"],
+          types: ["address"]
+        })
+
+        // Add place_changed listener
+        autocompleteRef.current.addListener("place_changed", () => {
+          const place = autocompleteRef.current?.getPlace()
+          if (place) {
+            onPlaceSelect(place)
+          }
+        })
+
+        setIsLoading(false)
+      } catch (error) {
+        console.error("Error initializing Google Maps:", error)
+        setIsLoading(false)
       }
-    })
+    }
 
-    setAutocomplete(autocompleteInstance)
-    setIsLoading(false)
-  }, [onPlaceSelect, autocomplete])
+    initializeAutocomplete()
+
+    return () => {
+      mounted = false
+      if (autocompleteRef.current) {
+        google.maps.event.clearInstanceListeners(autocompleteRef.current)
+      }
+    }
+  }, [onPlaceSelect])
 
   return (
     <div className="relative">
       <Input
         ref={inputRef}
         type="text"
-        className={cn("pr-8", className)}
+        autoComplete="off"
+        className={cn(
+          "pr-8",
+          "[&:not(:focus)]:rounded-b-md",
+          "[&:focus]:rounded-b-none",
+          className
+        )}
+        disabled={isLoading}
         {...props}
       />
       {isLoading && (
