@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Input } from "./ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import {
   Form,
   FormControl,
@@ -21,7 +20,6 @@ import {
   Phone, 
   MapPin, 
   MessageSquare,
-  Check
 } from "lucide-react"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { HOME_PAGE } from "@/constants/content"
@@ -200,15 +198,15 @@ export function ExternalLeadForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-xl mx-auto">
-        <div className="rounded-xl bg-card shadow-lg border border-border/40 p-6">
-          <div className="space-y-4">
+        <div className="rounded-xl bg-card shadow-lg border border-border/40 p-4 sm:p-6">
+          <div className="space-y-3 sm:space-y-4">
             {/* Title */}
             <div className="text-center mb-2">
-              <h2 className="text-2xl font-semibold tracking-tight text-foreground/90">Request a Ramp Rental Quote</h2>
+              <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground/90">Request a Ramp Rental Quote</h2>
             </div>
 
             {/* Form Fields Container */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {/* Names Section */}
               <div className="grid grid-cols-2 gap-3">
                 <FormField
@@ -220,19 +218,16 @@ export function ExternalLeadForm({
                         <div className="relative group">
                           <Input 
                             {...field} 
-                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
+                            className="h-10 sm:h-12 pl-10 pt-5 pb-1 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
                             placeholder=" "
                           />
                           <User2 className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
-                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all pointer-events-none">
+                          <FormLabel className="absolute left-10 top-1 text-xs sm:text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-xs sm:peer-focus:text-sm peer-focus:text-primary peer-focus:top-1 transition-all pointer-events-none">
                             First Name
                           </FormLabel>
-                          {field.value && !form.formState.errors.customer?.first_name && (
-                            <Check className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500 transition-opacity pointer-events-none" />
-                          )}
                         </div>
                       </FormControl>
-                      <FormMessage className="text-xs mt-1.5 px-1" />
+                      <FormMessage className="text-xs mt-1 px-1" />
                     </FormItem>
                   )}
                 />
@@ -246,19 +241,16 @@ export function ExternalLeadForm({
                         <div className="relative group">
                           <Input 
                             {...field} 
-                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
+                            className="h-10 sm:h-12 pl-10 pt-5 pb-1 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
                             placeholder=" "
                           />
                           <User2 className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
-                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all pointer-events-none">
+                          <FormLabel className="absolute left-10 top-1 text-xs sm:text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-xs sm:peer-focus:text-sm peer-focus:text-primary peer-focus:top-1 transition-all pointer-events-none">
                             Last Name
                           </FormLabel>
-                          {field.value && !form.formState.errors.customer?.last_name && (
-                            <Check className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500 transition-opacity pointer-events-none" />
-                          )}
                         </div>
                       </FormControl>
-                      <FormMessage className="text-xs mt-1.5 px-1" />
+                      <FormMessage className="text-xs mt-1 px-1" />
                     </FormItem>
                   )}
                 />
@@ -276,21 +268,18 @@ export function ExternalLeadForm({
                           <Input 
                             {...field}
                             type="email"
-                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
+                            className="h-10 sm:h-12 pl-10 pt-5 pb-1 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
                             placeholder=" "
                             value={field.value ?? ''}
                             onChange={(e) => field.onChange(e.target.value || null)}
                           />
                           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
-                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all pointer-events-none">
+                          <FormLabel className="absolute left-10 top-1 text-xs sm:text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-xs sm:peer-focus:text-sm peer-focus:text-primary peer-focus:top-1 transition-all pointer-events-none">
                             Email
                           </FormLabel>
-                          {field.value && !form.formState.errors.customer?.email && (
-                            <Check className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500 transition-opacity pointer-events-none" />
-                          )}
                         </div>
                       </FormControl>
-                      <FormMessage className="text-xs mt-1.5 px-1" />
+                      <FormMessage className="text-xs mt-1 px-1" />
                     </FormItem>
                   )}
                 />
@@ -305,21 +294,18 @@ export function ExternalLeadForm({
                           <Input 
                             {...field}
                             type="tel"
-                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
+                            className="h-10 sm:h-12 pl-10 pt-5 pb-1 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
                             placeholder=" "
                             value={field.value ?? ''}
                             onChange={(e) => field.onChange(e.target.value || null)}
                           />
                           <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
-                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all pointer-events-none">
+                          <FormLabel className="absolute left-10 top-1 text-xs sm:text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-xs sm:peer-focus:text-sm peer-focus:text-primary peer-focus:top-1 transition-all pointer-events-none">
                             Phone
                           </FormLabel>
-                          {field.value && !form.formState.errors.customer?.phone && (
-                            <Check className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500 transition-opacity pointer-events-none" />
-                          )}
                         </div>
                       </FormControl>
-                      <FormMessage className="text-xs mt-1.5 px-1" />
+                      <FormMessage className="text-xs mt-1 px-1" />
                     </FormItem>
                   )}
                 />
@@ -337,21 +323,18 @@ export function ExternalLeadForm({
                           {...field}
                           ref={inputRef}
                           type="text"
-                          className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer shadow-sm transition-colors text-base w-full cursor-text" 
+                          className="h-10 sm:h-12 pl-10 pt-5 pb-1 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
                           placeholder=" "
                           disabled={!isGoogleMapsLoaded}
                           autoComplete="off"
                         />
                         <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
-                        <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all pointer-events-none">
+                        <FormLabel className="absolute left-10 top-1 text-xs sm:text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-xs sm:peer-focus:text-sm peer-focus:text-primary peer-focus:top-1 transition-all pointer-events-none">
                           Installation Address
                         </FormLabel>
-                        {field.value && !form.formState.errors.customer?.address?.formatted_address && (
-                          <Check className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500 transition-opacity pointer-events-none" />
-                        )}
                       </div>
                     </FormControl>
-                    <FormMessage className="text-xs mt-1.5 px-1" />
+                    <FormMessage className="text-xs mt-1 px-1" />
                   </FormItem>
                 )}
               />
@@ -361,8 +344,8 @@ export function ExternalLeadForm({
                 control={form.control}
                 name="timeline"
                 render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    <FormLabel className="text-sm font-medium text-muted-foreground/70">
+                  <FormItem className="space-y-2">
+                    <FormLabel className="text-xs sm:text-sm font-medium text-muted-foreground/70">
                       {HOME_PAGE.form.timeline.label}
                     </FormLabel>
                     <FormControl>
@@ -379,7 +362,7 @@ export function ExternalLeadForm({
                             <FormControl>
                               <label
                                 className={cn(
-                                  "flex items-center w-full p-3 rounded-lg border-2 cursor-pointer transition-all",
+                                  "flex items-center w-full p-2 sm:p-3 rounded-lg border-2 cursor-pointer transition-all text-sm sm:text-base",
                                   "hover:bg-accent hover:border-accent hover:text-accent-foreground",
                                   field.value === option.value 
                                     ? "border-primary bg-accent text-accent-foreground" 
@@ -391,7 +374,7 @@ export function ExternalLeadForm({
                                   className="sr-only"
                                 />
                                 <div className="ml-1">
-                                  <span className="block font-medium text-base">
+                                  <span className="block font-medium">
                                     {option.label}
                                   </span>
                                 </div>
@@ -414,20 +397,20 @@ export function ExternalLeadForm({
                   <FormItem className="relative">
                     <FormControl>
                       <div className="relative group">
-                        <Textarea
+                        <Input
                           {...field}
-                          className="min-h-[100px] pl-10 pt-7 pb-2 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer resize-none transition-colors text-base w-full cursor-text" 
+                          className="h-10 sm:h-12 pl-10 pt-5 pb-1 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
                           placeholder=" "
                           value={field.value ?? ''}
                           onChange={(e) => field.onChange(e.target.value || null)}
                         />
-                        <MessageSquare className="absolute left-3 top-4 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
-                        <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all pointer-events-none">
+                        <MessageSquare className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
+                        <FormLabel className="absolute left-10 top-1 text-xs sm:text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-xs sm:peer-focus:text-sm peer-focus:text-primary peer-focus:top-1 transition-all pointer-events-none">
                           Additional Notes
                         </FormLabel>
                       </div>
                     </FormControl>
-                    <FormMessage className="text-xs mt-1.5 px-1" />
+                    <FormMessage className="text-xs mt-1 px-1" />
                   </FormItem>
                 )}
               />
@@ -437,7 +420,7 @@ export function ExternalLeadForm({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full h-12 rounded-lg font-medium bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm transition-colors mt-2"
+              className="w-full h-10 sm:h-12 rounded-lg font-medium bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm transition-colors"
             >
               {isSubmitting ? (
                 <div className="flex items-center justify-center space-x-2">

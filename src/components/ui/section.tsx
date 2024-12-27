@@ -5,9 +5,10 @@ interface SectionProps {
   children: ReactNode;
   className?: string;
   id?: string;
+  isFirstSection?: boolean;
 }
 
-export function Section({ children, className, id }: SectionProps) {
+export function Section({ children, className, id, isFirstSection }: SectionProps) {
   return (
     <section 
       id={id}
@@ -17,7 +18,11 @@ export function Section({ children, className, id }: SectionProps) {
         "w-full",
         "snap-start snap-always",
         "flex flex-col items-center",
-        "px-4 sm:px-6 py-8 sm:py-12",
+        {
+          "pt-20 sm:pt-24 pb-8 sm:pb-12": isFirstSection,
+          "py-8 sm:py-12": !isFirstSection,
+        },
+        "px-4 sm:px-6",
         "transform-gpu",
         "will-change-transform",
         "overflow-hidden",

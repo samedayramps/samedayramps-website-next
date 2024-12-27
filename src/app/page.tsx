@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <Section>
+      <Section isFirstSection>
         <Container size="small" className="flex flex-col h-full">
           <div className="flex-1 flex flex-col items-center justify-center">
             {/* Text Content */}
