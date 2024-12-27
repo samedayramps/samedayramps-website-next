@@ -25,6 +25,7 @@ const leadFormSchema = z.object({
     phone: z.string().min(10, "Phone number must be at least 10 digits").nullish().transform(val => val || ''),
     address: z.object({
       formatted_address: z.string().min(1, "Installation address is required"),
+      place_id: z.string().min(1, "Place ID is required"),
       street_number: z.string().optional(),
       street_name: z.string().optional(),
       city: z.string().optional(),
@@ -63,6 +64,13 @@ export function LeadForm() {
         phone: '',
         address: {
           formatted_address: '',
+          place_id: '',
+          street_number: '',
+          street_name: '',
+          city: '',
+          state: '',
+          postal_code: '',
+          country: '',
         },
       },
       timeline: 'FLEXIBLE',
@@ -176,7 +184,7 @@ export function LeadForm() {
                         <AddressInput 
                           placeholder="Enter your address"
                           onPlaceSelect={(place) => {
-                            if (!place.formatted_address) return
+                            if (!place.formatted_address || !place.place_id) return
                             
                             field.onChange(place.formatted_address)
                             
@@ -188,6 +196,7 @@ export function LeadForm() {
                             
                             form.setValue('customer.address', {
                               formatted_address: place.formatted_address,
+                              place_id: place.place_id,
                               street_number: getComponent('street_number'),
                               street_name: getComponent('route'),
                               city: getComponent('locality'),
