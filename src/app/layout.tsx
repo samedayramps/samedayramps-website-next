@@ -32,7 +32,7 @@ export default function RootLayout({
         className={cn(
           geistSans.variable,
           geistMono.variable,
-          "antialiased h-full overflow-hidden"
+          "antialiased min-h-[100dvh] overflow-hidden"
         )}
         suppressHydrationWarning
       >
@@ -47,7 +47,7 @@ export default function RootLayout({
           <Header />
           <main 
             className={cn(
-              "h-[calc(100vh-64px)]",
+              "h-[calc(100dvh-64px)]",
               "w-full",
               "overflow-y-auto",
               "snap-y snap-mandatory",

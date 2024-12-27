@@ -1,11 +1,24 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { HOME_PAGE } from "@/constants/content"
 
 export function FeaturesGrid() {
   const [expandedFeature, setExpandedFeature] = useState<string | null>(null)
+  const [isLargeScreen, setIsLargeScreen] = useState(false)
+
+  // Handle screen size detection
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsLargeScreen(window.innerHeight >= 800)
+    }
+    
+    checkScreenSize()
+    window.addEventListener('resize', checkScreenSize)
+    
+    return () => window.removeEventListener('resize', checkScreenSize)
+  }, [])
 
   return (
     <div className="grid gap-4 md:grid-cols-3">
@@ -16,9 +29,10 @@ export function FeaturesGrid() {
             "group p-4 rounded-lg",
             "bg-background/50 backdrop-blur-sm",
             "transition-all duration-200",
-            "hover:bg-background/80"
+            "hover:bg-background/80",
+            isLargeScreen ? "cursor-default" : "cursor-pointer"
           )}
-          onClick={() => setExpandedFeature(
+          onClick={() => !isLargeScreen && setExpandedFeature(
             expandedFeature === feature.title ? null : feature.title
           )}
         >
@@ -31,7 +45,7 @@ export function FeaturesGrid() {
             </div>
             <div className={cn(
               "grid transition-all duration-200",
-              expandedFeature === feature.title 
+              (expandedFeature === feature.title || isLargeScreen)
                 ? "grid-rows-[1fr] mt-3" 
                 : "grid-rows-[0fr]"
             )}>

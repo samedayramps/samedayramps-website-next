@@ -14,13 +14,13 @@ export function Section({ children, className, id, isFirstSection }: SectionProp
       id={id}
       className={cn(
         "relative",
-        "min-h-[calc(100dvh-64px)]",
+        "h-[calc(100dvh-64px)]",
         "w-full",
         "snap-start snap-always",
-        "flex flex-col items-center",
+        "flex flex-col items-center justify-center",
         {
-          "pt-20 sm:pt-24 pb-8 sm:pb-12": isFirstSection,
-          "py-8 sm:py-12": !isFirstSection,
+          "pt-16 sm:pt-20": isFirstSection,
+          "py-6 sm:py-8": !isFirstSection,
         },
         "px-4 sm:px-6",
         "transform-gpu",
