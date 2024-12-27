@@ -49,8 +49,8 @@ export const HOME_PAGE = {
     ],
   },
   contact: {
-    title: "Need A Wheelchair Ramp?",
-    subtitle: "Fill out this quick form and we'll get back to you with a quote",
+    title: "",
+    subtitle: "",
   },
   images: {
     ramp1: {
