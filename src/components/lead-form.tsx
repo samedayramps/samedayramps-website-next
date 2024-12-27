@@ -7,13 +7,6 @@ import * as z from "zod"
 import { Input } from "./ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select"
-import {
   Form,
   FormControl,
   FormField,
@@ -27,9 +20,12 @@ import {
   Mail, 
   Phone, 
   MapPin, 
-  Calendar, 
-  MessageSquare 
+  MessageSquare,
+  Check
 } from "lucide-react"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { HOME_PAGE } from "@/constants/content"
+import { cn } from "@/lib/utils"
 
 // Form validation schema
 const leadFormSchema = z.object({
@@ -221,16 +217,19 @@ export function ExternalLeadForm({
                   render={({ field }) => (
                     <FormItem className="relative">
                       <FormControl>
-                        <div className="relative">
+                        <div className="relative group">
                           <Input 
                             {...field} 
-                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 hover:bg-background/80 focus:bg-background peer transition-colors text-base" 
+                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
                             placeholder=" "
                           />
-                          <User2 className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors" />
-                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all">
+                          <User2 className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
+                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all pointer-events-none">
                             First Name
                           </FormLabel>
+                          {field.value && !form.formState.errors.customer?.first_name && (
+                            <Check className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500 transition-opacity pointer-events-none" />
+                          )}
                         </div>
                       </FormControl>
                       <FormMessage className="text-xs mt-1.5 px-1" />
@@ -244,16 +243,19 @@ export function ExternalLeadForm({
                   render={({ field }) => (
                     <FormItem className="relative">
                       <FormControl>
-                        <div className="relative">
+                        <div className="relative group">
                           <Input 
                             {...field} 
-                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 hover:bg-background/80 focus:bg-background peer transition-colors text-base" 
+                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
                             placeholder=" "
                           />
-                          <User2 className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors" />
-                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all">
+                          <User2 className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
+                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all pointer-events-none">
                             Last Name
                           </FormLabel>
+                          {field.value && !form.formState.errors.customer?.last_name && (
+                            <Check className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500 transition-opacity pointer-events-none" />
+                          )}
                         </div>
                       </FormControl>
                       <FormMessage className="text-xs mt-1.5 px-1" />
@@ -270,19 +272,22 @@ export function ExternalLeadForm({
                   render={({ field }) => (
                     <FormItem className="relative">
                       <FormControl>
-                        <div className="relative">
+                        <div className="relative group">
                           <Input 
                             {...field}
                             type="email"
-                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 hover:bg-background/80 focus:bg-background peer transition-colors text-base" 
+                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
                             placeholder=" "
                             value={field.value ?? ''}
                             onChange={(e) => field.onChange(e.target.value || null)}
                           />
-                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors" />
-                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all">
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
+                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all pointer-events-none">
                             Email
                           </FormLabel>
+                          {field.value && !form.formState.errors.customer?.email && (
+                            <Check className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500 transition-opacity pointer-events-none" />
+                          )}
                         </div>
                       </FormControl>
                       <FormMessage className="text-xs mt-1.5 px-1" />
@@ -296,19 +301,22 @@ export function ExternalLeadForm({
                   render={({ field }) => (
                     <FormItem className="relative">
                       <FormControl>
-                        <div className="relative">
+                        <div className="relative group">
                           <Input 
                             {...field}
                             type="tel"
-                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 hover:bg-background/80 focus:bg-background peer transition-colors text-base" 
+                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
                             placeholder=" "
                             value={field.value ?? ''}
                             onChange={(e) => field.onChange(e.target.value || null)}
                           />
-                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors" />
-                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all">
+                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
+                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all pointer-events-none">
                             Phone
                           </FormLabel>
+                          {field.value && !form.formState.errors.customer?.phone && (
+                            <Check className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500 transition-opacity pointer-events-none" />
+                          )}
                         </div>
                       </FormControl>
                       <FormMessage className="text-xs mt-1.5 px-1" />
@@ -324,20 +332,23 @@ export function ExternalLeadForm({
                 render={({ field }) => (
                   <FormItem className="relative">
                     <FormControl>
-                      <div className="relative">
+                      <div className="relative group">
                         <Input
                           {...field}
                           ref={inputRef}
                           type="text"
-                          className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 hover:bg-background/80 focus:bg-background peer shadow-sm transition-colors text-base" 
+                          className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer shadow-sm transition-colors text-base w-full cursor-text" 
                           placeholder=" "
                           disabled={!isGoogleMapsLoaded}
                           autoComplete="off"
                         />
-                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors" />
-                        <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all">
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
+                        <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all pointer-events-none">
                           Installation Address
                         </FormLabel>
+                        {field.value && !form.formState.errors.customer?.address?.formatted_address && (
+                          <Check className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500 transition-opacity pointer-events-none" />
+                        )}
                       </div>
                     </FormControl>
                     <FormMessage className="text-xs mt-1.5 px-1" />
@@ -350,27 +361,47 @@ export function ExternalLeadForm({
                 control={form.control}
                 name="timeline"
                 render={({ field }) => (
-                  <FormItem className="relative">
-                    <Select
-                      onValueChange={(value) => field.onChange(value || null)}
-                      defaultValue={field.value ?? undefined}
-                    >
-                      <FormControl>
-                        <div className="relative">
-                          <SelectTrigger className="h-12 pl-10 rounded-lg bg-background/50 hover:bg-background/80 transition-colors">
-                            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50" />
-                            <SelectValue placeholder="When do you need the ramp?" />
-                          </SelectTrigger>
-                        </div>
-                      </FormControl>
-                      <SelectContent className="rounded-lg">
-                        <SelectItem value="ASAP">As soon as possible</SelectItem>
-                        <SelectItem value="THIS_WEEK">This week</SelectItem>
-                        <SelectItem value="THIS_MONTH">This month</SelectItem>
-                        <SelectItem value="FLEXIBLE">Flexible</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-xs mt-1.5 px-1" />
+                  <FormItem className="space-y-3">
+                    <FormLabel className="text-sm font-medium text-muted-foreground/70">
+                      {HOME_PAGE.form.timeline.label}
+                    </FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value || undefined}
+                        className="grid grid-cols-2 gap-2"
+                      >
+                        {HOME_PAGE.form.timeline.options.map((option) => (
+                          <FormItem 
+                            key={option.value}
+                            className="relative"
+                          >
+                            <FormControl>
+                              <label
+                                className={cn(
+                                  "flex items-center w-full p-3 rounded-lg border-2 cursor-pointer transition-all",
+                                  "hover:bg-accent hover:border-accent hover:text-accent-foreground",
+                                  field.value === option.value 
+                                    ? "border-primary bg-accent text-accent-foreground" 
+                                    : "border-border/40 bg-background/50"
+                                )}
+                              >
+                                <RadioGroupItem 
+                                  value={option.value} 
+                                  className="sr-only"
+                                />
+                                <div className="ml-1">
+                                  <span className="block font-medium text-base">
+                                    {option.label}
+                                  </span>
+                                </div>
+                              </label>
+                            </FormControl>
+                          </FormItem>
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage className="text-xs px-1" />
                   </FormItem>
                 )}
               />
@@ -382,16 +413,16 @@ export function ExternalLeadForm({
                 render={({ field }) => (
                   <FormItem className="relative">
                     <FormControl>
-                      <div className="relative">
+                      <div className="relative group">
                         <Textarea
                           {...field}
-                          className="min-h-[100px] pl-10 pt-7 pb-2 rounded-lg bg-background/50 hover:bg-background/80 focus:bg-background peer resize-none transition-colors text-base" 
+                          className="min-h-[100px] pl-10 pt-7 pb-2 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer resize-none transition-colors text-base w-full cursor-text" 
                           placeholder=" "
                           value={field.value ?? ''}
                           onChange={(e) => field.onChange(e.target.value || null)}
                         />
-                        <MessageSquare className="absolute left-3 top-4 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors" />
-                        <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all">
+                        <MessageSquare className="absolute left-3 top-4 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
+                        <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all pointer-events-none">
                           Additional Notes
                         </FormLabel>
                       </div>

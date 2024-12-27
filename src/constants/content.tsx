@@ -76,4 +76,15 @@ export const HOME_PAGE = {
       targetSectionIndex: 3,
     },
   },
+  form: {
+    timeline: {
+      label: "How soon do you need it?",
+      options: [
+        { value: "ASAP", label: "In 24 hours" },
+        { value: "THIS_WEEK", label: "In 3 days" },
+        { value: "THIS_MONTH", label: "In a week" },
+        { value: "FLEXIBLE", label: "Over a week" }
+      ]
+    }
+  }
 } as const; 
