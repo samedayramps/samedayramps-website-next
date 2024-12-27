@@ -17,10 +17,10 @@ export default function Home() {
           <div className="flex-1 flex flex-col justify-start pt-8 md:justify-center space-y-6 md:space-y-12">
             {/* Text Content */}
             <div className="text-center">
-              <h1 className="text-4xl md:text-5xl font-bold">
+              <h1 className="text-3xl md:text-5xl font-bold">
                 {HOME_PAGE.hero.title}
               </h1>
-              <p className="text-lg md:text-xl mt-4 md:mt-6 text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-base md:text-xl mt-4 md:mt-6 text-muted-foreground max-w-2xl mx-auto">
                 {HOME_PAGE.hero.subtitle}
               </p>
             </div>
@@ -48,7 +48,7 @@ export default function Home() {
           <div className="flex-1 flex flex-col justify-center">
             <div className="space-y-4 md:space-y-8">
               <div>
-                <h2 className="text-3xl font-bold mb-8 text-center">
+                <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">
                   {HOME_PAGE.features.title}
                 </h2>
                 
@@ -79,7 +79,7 @@ export default function Home() {
                       <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-3">
                           {feature.icon}
-                          <h3 className="text-lg font-medium">
+                          <h3 className="text-base md:text-lg font-medium">
                             {feature.title}
                           </h3>
                         </div>
@@ -109,7 +109,9 @@ export default function Home() {
             <div className="space-y-4 md:space-y-8">
               <div>
                 <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold mb-4">{HOME_PAGE.faq.title}</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">
+                    {HOME_PAGE.faq.title}
+                  </h2>
                 </div>
 
                 {/* Image */}
@@ -131,7 +133,7 @@ export default function Home() {
                       value={`item-${index}`}
                     >
                       <AccordionTrigger className="hover:no-underline">
-                        <h3 className="text-lg font-medium text-left">
+                        <h3 className="text-base md:text-lg font-medium text-left">
                           {faq.question}
                         </h3>
                       </AccordionTrigger>
@@ -160,7 +162,9 @@ export default function Home() {
             <div className="space-y-4 md:space-y-8">
               <div>
                 <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold mb-4">{HOME_PAGE.contact.title}</h2>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">
+                    {HOME_PAGE.contact.title}
+                  </h2>
                   <p className="text-lg text-muted-foreground">
                     {HOME_PAGE.contact.subtitle}
                   </p>
