@@ -21,25 +21,24 @@ const leadFormSchema = z.object({
   customer: z.object({
     first_name: z.string().min(1, "First name is required"),
     last_name: z.string().min(1, "Last name is required"),
-    email: z.string().email().nullish().transform(val => val || ''),
-    phone: z.string().min(10, "Phone number must be at least 10 digits").nullish().transform(val => val || ''),
+    email: z.string().email().optional().nullable(),
+    phone: z.string().min(10, "Phone number must be at least 10 digits").optional().nullable(),
     address: z.object({
       formatted_address: z.string().min(1, "Installation address is required"),
-      place_id: z.string().min(1, "Place ID is required"),
-      street_number: z.string().optional(),
-      street_name: z.string().optional(),
-      city: z.string().optional(),
-      state: z.string().optional(),
-      postal_code: z.string().optional(),
-      country: z.string().optional(),
-      lat: z.number().optional(),
-      lng: z.number().optional(),
+      street_number: z.string().nullable(),
+      street_name: z.string().nullable(),
+      city: z.string().nullable(),
+      state: z.string().nullable(),
+      postal_code: z.string().nullable(),
+      country: z.string().nullable(),
+      lat: z.number().nullable(),
+      lng: z.number().nullable(),
+      place_id: z.string().nullable(),
     }),
   }),
   timeline: z.enum(['ASAP', 'THIS_WEEK', 'THIS_MONTH', 'FLEXIBLE']),
-  knows_length: z.enum(['YES', 'NO']),
-  ramp_length: z.number().nullable(),
-  notes: z.string().nullish().transform(val => val || ''),
+  status: z.string().default('NEW'),
+  notes: z.string().optional().nullable(),
 })
 
 const timelineOptions = [
@@ -60,23 +59,24 @@ export function LeadForm() {
       customer: {
         first_name: '',
         last_name: '',
-        email: '',
-        phone: '',
+        email: null,
+        phone: null,
         address: {
           formatted_address: '',
-          place_id: '',
-          street_number: '',
-          street_name: '',
-          city: '',
-          state: '',
-          postal_code: '',
-          country: '',
+          street_number: null,
+          street_name: null,
+          city: null,
+          state: null,
+          postal_code: null,
+          country: null,
+          lat: null,
+          lng: null,
+          place_id: null,
         },
       },
       timeline: 'FLEXIBLE',
-      knows_length: 'NO',
-      ramp_length: null,
-      notes: '',
+      status: 'NEW',
+      notes: null,
     },
   })
 
@@ -159,7 +159,12 @@ export function LeadForm() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="john@example.com" {...field} />
+                          <Input 
+                            type="email" 
+                            placeholder="john@example.com" 
+                            {...field}
+                            value={field.value ?? ''}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -172,7 +177,12 @@ export function LeadForm() {
                       <FormItem>
                         <FormLabel>Phone</FormLabel>
                         <FormControl>
-                          <Input type="tel" placeholder="(555) 555-5555" {...field} />
+                          <Input 
+                            type="tel" 
+                            placeholder="(555) 555-5555" 
+                            {...field}
+                            value={field.value ?? ''}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -181,7 +191,7 @@ export function LeadForm() {
                 </div>
                 <FormField
                   control={form.control}
-                  name="customer.address.formatted_address"
+                  name="customer.address"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Installation Address</FormLabel>
@@ -195,26 +205,26 @@ export function LeadForm() {
                             const geometry = place.geometry
                             
                             const getComponent = (type: string) => 
-                              addressComponents.find(c => c.types.includes(type))?.long_name || ''
+                              addressComponents.find(c => c.types.includes(type))?.long_name || null
                             
                             form.setValue('customer.address', {
                               formatted_address: place.formatted_address || '',
-                              place_id: place.place_id || '',
+                              place_id: place.place_id || null,
                               street_number: getComponent('street_number'),
                               street_name: getComponent('route'),
                               city: getComponent('locality'),
                               state: getComponent('administrative_area_level_1'),
                               postal_code: getComponent('postal_code'),
                               country: getComponent('country'),
-                              lat: geometry?.location?.lat() || 0,
-                              lng: geometry?.location?.lng() || 0,
+                              lat: geometry?.location?.lat() || null,
+                              lng: geometry?.location?.lng() || null,
                             }, { 
                               shouldValidate: true,
                               shouldDirty: true,
                               shouldTouch: true
                             })
                           }}
-                          value={field.value}
+                          value={field.value.formatted_address}
                         />
                       </FormControl>
                       <FormMessage />
