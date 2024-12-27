@@ -1,10 +1,18 @@
 "use client"
 
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
-import { Button } from "@/components/ui/button"
+import { useEffect, useRef, useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import { Input } from "./ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select"
 import {
   Form,
   FormControl,
@@ -12,17 +20,24 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { AddressInput } from "@/components/ui/address-input"
+} from "./ui/form"
+import { Button } from "./ui/button"
+import { 
+  User2, 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Calendar, 
+  MessageSquare 
+} from "lucide-react"
 
+// Form validation schema
 const leadFormSchema = z.object({
   customer: z.object({
     first_name: z.string().min(1, "First name is required"),
     last_name: z.string().min(1, "Last name is required"),
-    email: z.string().email().optional().nullable(),
-    phone: z.string().min(10, "Phone number must be at least 10 digits").optional().nullable(),
+    email: z.string().email().nullable(),
+    phone: z.string().min(10, "Phone number must be at least 10 digits").nullable(),
     address: z.object({
       formatted_address: z.string().min(1, "Installation address is required"),
       street_number: z.string().nullable(),
@@ -36,33 +51,40 @@ const leadFormSchema = z.object({
       place_id: z.string().nullable(),
     }),
   }),
-  timeline: z.enum(['ASAP', 'THIS_WEEK', 'THIS_MONTH', 'FLEXIBLE']),
-  status: z.string().default('NEW'),
-  notes: z.string().optional().nullable(),
+  timeline: z.string().nullable(),
+  notes: z.string().nullable(),
 })
 
-const timelineOptions = [
-  { value: 'ASAP', label: 'As Soon As Possible' },
-  { value: 'THIS_WEEK', label: 'This Week' },
-  { value: 'THIS_MONTH', label: 'This Month' },
-  { value: 'FLEXIBLE', label: 'Flexible' },
-]
+type LeadFormValues = z.infer<typeof leadFormSchema>
 
-export function LeadForm() {
+interface ExternalLeadFormProps {
+  apiKey: string
+  apiEndpoint: string
+  onSuccess?: (leadId: string) => void
+  onError?: (error: Error) => void
+}
+
+export function ExternalLeadForm({
+  apiKey,
+  apiEndpoint,
+  onSuccess,
+  onError,
+}: ExternalLeadFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState<string | null>(null)
-  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
 
-  const form = useForm<z.infer<typeof leadFormSchema>>({
+  const form = useForm<LeadFormValues>({
     resolver: zodResolver(leadFormSchema),
     defaultValues: {
       customer: {
-        first_name: '',
-        last_name: '',
+        first_name: "",
+        last_name: "",
         email: null,
         phone: null,
         address: {
-          formatted_address: '',
+          formatted_address: "",
           street_number: null,
           street_name: null,
           city: null,
@@ -74,215 +96,341 @@ export function LeadForm() {
           place_id: null,
         },
       },
-      timeline: 'FLEXIBLE',
-      status: 'NEW',
+      timeline: null,
       notes: null,
     },
   })
 
-  async function onSubmit(values: z.infer<typeof leadFormSchema>) {
-    setIsSubmitting(true)
-    setSubmitError(null)
-    
+  // Load Google Maps script
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !window.google) {
+      const script = document.createElement('script')
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`
+      script.async = true
+      script.defer = true
+      script.onload = () => setIsGoogleMapsLoaded(true)
+      document.body.appendChild(script)
+      return () => {
+        document.body.removeChild(script)
+      }
+    } else {
+      setIsGoogleMapsLoaded(true)
+    }
+  }, [])
+
+  // Initialize Google Places Autocomplete
+  useEffect(() => {
+    if (!isGoogleMapsLoaded || !inputRef.current) return
+
+    // Store ref in variable for cleanup
+    const input = inputRef.current
+
     try {
-      const response = await fetch('https://app.samedayramps.com/api/external/leads', {
+      autocompleteRef.current = new google.maps.places.Autocomplete(input, {
+        componentRestrictions: { country: "US" },
+        fields: ["address_components", "formatted_address", "geometry", "place_id"],
+        types: ["address"],
+      })
+
+      const placeChangedListener = autocompleteRef.current.addListener("place_changed", () => {
+        const place = autocompleteRef.current?.getPlace()
+        if (place?.formatted_address) {
+          const location = place.geometry?.location
+          form.setValue("customer.address", {
+            formatted_address: place.formatted_address,
+            street_number: getAddressComponent(place, 'street_number'),
+            street_name: getAddressComponent(place, 'route'),
+            city: getAddressComponent(place, 'locality'),
+            state: getAddressComponent(place, 'administrative_area_level_1'),
+            postal_code: getAddressComponent(place, 'postal_code'),
+            country: getAddressComponent(place, 'country'),
+            lat: location?.lat() ?? null,
+            lng: location?.lng() ?? null,
+            place_id: place.place_id ?? null,
+          })
+        }
+      })
+
+      // Prevent form submission on enter
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Enter') {
+          e.preventDefault()
+        }
+      }
+      input.addEventListener('keydown', handleKeyDown)
+
+      return () => {
+        if (placeChangedListener) {
+          google.maps.event.removeListener(placeChangedListener)
+        }
+        input.removeEventListener('keydown', handleKeyDown)
+        if (autocompleteRef.current) {
+          google.maps.event.clearInstanceListeners(autocompleteRef.current)
+        }
+      }
+    } catch (error) {
+      console.error('Error initializing Google Places Autocomplete:', error)
+    }
+  }, [isGoogleMapsLoaded, form])
+
+  async function onSubmit(values: LeadFormValues) {
+    setIsSubmitting(true)
+    try {
+      const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_EXTERNAL_API_KEY}`,
+          'Authorization': `Bearer ${apiKey}`,
         },
         body: JSON.stringify(values),
       })
 
-      const data = await response.json()
-
       if (!response.ok) {
-        throw new Error(data?.message || 'Failed to submit lead')
+        const error = await response.json()
+        throw new Error(error.message || 'Failed to submit lead')
       }
 
-      setSubmitSuccess(true)
+      const data = await response.json()
+      onSuccess?.(data.leadId)
       form.reset()
     } catch (error) {
-      console.error('Lead submission error:', error)
-      setSubmitError(
-        error instanceof Error 
-          ? error.message 
-          : 'Failed to submit lead. Please try again.'
-      )
+      console.error('Error submitting lead:', error)
+      onError?.(error as Error)
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-xl mx-auto">
-          <div className="bg-background rounded-lg border shadow-md p-4 md:p-6 dark:bg-zinc-900">
-            <div className="space-y-6">
-              {/* Personal Information Section */}
-              <div className="space-y-4">
-                <h2 className="text-lg font-semibold">Personal Information</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="customer.first_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>First Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="John" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="customer.last_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Last Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Doe" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="customer.email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="email" 
-                            placeholder="john@example.com" 
-                            {...field}
-                            value={field.value ?? ''}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="customer.phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="tel" 
-                            placeholder="(555) 555-5555" 
-                            {...field}
-                            value={field.value ?? ''}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-xl mx-auto">
+        <div className="rounded-xl bg-card shadow-lg border border-border/40 p-6">
+          <div className="space-y-4">
+            {/* Title */}
+            <div className="text-center mb-2">
+              <h2 className="text-2xl font-semibold tracking-tight text-foreground/90">Request a Ramp Rental Quote</h2>
+            </div>
+
+            {/* Form Fields Container */}
+            <div className="space-y-4">
+              {/* Names Section */}
+              <div className="grid grid-cols-2 gap-3">
                 <FormField
                   control={form.control}
-                  name="customer.address"
+                  name="customer.first_name"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Installation Address</FormLabel>
+                    <FormItem className="relative">
                       <FormControl>
-                        <AddressInput 
-                          placeholder="Enter your address"
-                          onPlaceSelect={(place) => {
-                            if (!place) return
-                            
-                            const addressComponents = place.address_components || []
-                            const geometry = place.geometry
-                            
-                            const getComponent = (type: string) => 
-                              addressComponents.find(c => c.types.includes(type))?.long_name || null
-                            
-                            form.setValue('customer.address', {
-                              formatted_address: place.formatted_address || '',
-                              place_id: place.place_id || null,
-                              street_number: getComponent('street_number'),
-                              street_name: getComponent('route'),
-                              city: getComponent('locality'),
-                              state: getComponent('administrative_area_level_1'),
-                              postal_code: getComponent('postal_code'),
-                              country: getComponent('country'),
-                              lat: geometry?.location?.lat() || null,
-                              lng: geometry?.location?.lng() || null,
-                            }, { 
-                              shouldValidate: true,
-                              shouldDirty: true,
-                              shouldTouch: true
-                            })
-                          }}
-                          value={field.value.formatted_address}
+                        <div className="relative">
+                          <Input 
+                            {...field} 
+                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 hover:bg-background/80 focus:bg-background peer transition-colors text-base" 
+                            placeholder=" "
+                          />
+                          <User2 className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors" />
+                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all">
+                            First Name
+                          </FormLabel>
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-xs mt-1.5 px-1" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="customer.last_name"
+                  render={({ field }) => (
+                    <FormItem className="relative">
+                      <FormControl>
+                        <div className="relative">
+                          <Input 
+                            {...field} 
+                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 hover:bg-background/80 focus:bg-background peer transition-colors text-base" 
+                            placeholder=" "
+                          />
+                          <User2 className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors" />
+                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all">
+                            Last Name
+                          </FormLabel>
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-xs mt-1.5 px-1" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Contact Fields */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <FormField
+                  control={form.control}
+                  name="customer.email"
+                  render={({ field }) => (
+                    <FormItem className="relative">
+                      <FormControl>
+                        <div className="relative">
+                          <Input 
+                            {...field}
+                            type="email"
+                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 hover:bg-background/80 focus:bg-background peer transition-colors text-base" 
+                            placeholder=" "
+                            value={field.value ?? ''}
+                            onChange={(e) => field.onChange(e.target.value || null)}
+                          />
+                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors" />
+                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all">
+                            Email
+                          </FormLabel>
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-xs mt-1.5 px-1" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="customer.phone"
+                  render={({ field }) => (
+                    <FormItem className="relative">
+                      <FormControl>
+                        <div className="relative">
+                          <Input 
+                            {...field}
+                            type="tel"
+                            className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 hover:bg-background/80 focus:bg-background peer transition-colors text-base" 
+                            placeholder=" "
+                            value={field.value ?? ''}
+                            onChange={(e) => field.onChange(e.target.value || null)}
+                          />
+                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors" />
+                          <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all">
+                            Phone
+                          </FormLabel>
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-xs mt-1.5 px-1" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Address Field */}
+              <FormField
+                control={form.control}
+                name="customer.address.formatted_address"
+                render={({ field }) => (
+                  <FormItem className="relative">
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          {...field}
+                          ref={inputRef}
+                          type="text"
+                          className="h-12 pl-10 pt-7 pb-2 rounded-lg bg-background/50 hover:bg-background/80 focus:bg-background peer shadow-sm transition-colors text-base" 
+                          placeholder=" "
+                          disabled={!isGoogleMapsLoaded}
+                          autoComplete="off"
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors" />
+                        <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all">
+                          Installation Address
+                        </FormLabel>
+                      </div>
+                    </FormControl>
+                    <FormMessage className="text-xs mt-1.5 px-1" />
+                  </FormItem>
+                )}
+              />
 
-              {/* Timeline Section */}
-              <div className="space-y-2">
-                <h2 className="text-lg font-semibold">Installation Timeline</h2>
-                <FormField
-                  control={form.control}
-                  name="timeline"
-                  render={({ field }) => (
-                    <FormItem>
+              {/* Timeline Field */}
+              <FormField
+                control={form.control}
+                name="timeline"
+                render={({ field }) => (
+                  <FormItem className="relative">
+                    <Select
+                      onValueChange={(value) => field.onChange(value || null)}
+                      defaultValue={field.value ?? undefined}
+                    >
                       <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex flex-wrap gap-4"
-                        >
-                          {timelineOptions.map((option) => (
-                            <FormItem key={option.value} className="flex items-center space-x-2">
-                              <FormControl>
-                                <RadioGroupItem value={option.value} />
-                              </FormControl>
-                              <FormLabel className="font-normal">
-                                {option.label}
-                              </FormLabel>
-                            </FormItem>
-                          ))}
-                        </RadioGroup>
+                        <div className="relative">
+                          <SelectTrigger className="h-12 pl-10 rounded-lg bg-background/50 hover:bg-background/80 transition-colors">
+                            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50" />
+                            <SelectValue placeholder="When do you need the ramp?" />
+                          </SelectTrigger>
+                        </div>
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                      <SelectContent className="rounded-lg">
+                        <SelectItem value="ASAP">As soon as possible</SelectItem>
+                        <SelectItem value="THIS_WEEK">This week</SelectItem>
+                        <SelectItem value="THIS_MONTH">This month</SelectItem>
+                        <SelectItem value="FLEXIBLE">Flexible</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs mt-1.5 px-1" />
+                  </FormItem>
+                )}
+              />
+
+              {/* Notes Field */}
+              <FormField
+                control={form.control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem className="relative">
+                    <FormControl>
+                      <div className="relative">
+                        <Textarea
+                          {...field}
+                          className="min-h-[100px] pl-10 pt-7 pb-2 rounded-lg bg-background/50 hover:bg-background/80 focus:bg-background peer resize-none transition-colors text-base" 
+                          placeholder=" "
+                          value={field.value ?? ''}
+                          onChange={(e) => field.onChange(e.target.value || null)}
+                        />
+                        <MessageSquare className="absolute left-3 top-4 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors" />
+                        <FormLabel className="absolute left-10 top-1.5 text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:text-sm peer-focus:text-primary peer-focus:top-1.5 transition-all">
+                          Additional Notes
+                        </FormLabel>
+                      </div>
+                    </FormControl>
+                    <FormMessage className="text-xs mt-1.5 px-1" />
+                  </FormItem>
+                )}
+              />
             </div>
 
-            <div className="flex flex-col gap-4 mt-8">
-              <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? "Submitting..." : "Get Your Quote"}
-              </Button>
-
-              {submitError && (
-                <p className="text-sm text-destructive text-center">{submitError}</p>
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full h-12 rounded-lg font-medium bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm transition-colors mt-2"
+            >
+              {isSubmitting ? (
+                <div className="flex items-center justify-center space-x-2">
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  <span>Submitting...</span>
+                </div>
+              ) : (
+                "Submit Lead"
               )}
-              {submitSuccess && (
-                <p className="text-sm text-green-600 text-center">
-                  Thank you! We&apos;ll be in touch shortly.
-                </p>
-              )}
-            </div>
+            </Button>
           </div>
-        </form>
-      </Form>
-    </>
+        </div>
+      </form>
+    </Form>
   )
+}
+
+function getAddressComponent(
+  place: google.maps.places.PlaceResult,
+  type: string,
+  useShortName: boolean = false
+): string | null {
+  const component = place.address_components?.find(
+    (component) => component.types.includes(type)
+  )
+  return component ? (useShortName ? component.short_name : component.long_name) : null
 } 

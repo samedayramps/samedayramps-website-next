@@ -2,7 +2,7 @@ import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { VideoPlayer } from "@/components/ui/video-player";
 import { ScrollIndicator } from "@/components/ui/scroll-indicator";
-import { LeadForm } from "@/components/lead-form";
+import { ExternalLeadForm } from "@/components/lead-form";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -160,7 +160,10 @@ export default function Home() {
                   {HOME_PAGE.contact.subtitle}
                 </p>
               </div>
-              <LeadForm />
+              <ExternalLeadForm 
+                apiKey={process.env.NEXT_PUBLIC_LEAD_API_KEY || ''}
+                apiEndpoint={process.env.NEXT_PUBLIC_LEAD_API_ENDPOINT || ''}
+              />
             </div>
           </div>
         </Container>
