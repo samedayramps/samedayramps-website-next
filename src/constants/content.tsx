@@ -2,7 +2,7 @@ import { Clock, CalendarRange, ShieldCheck } from "lucide-react";
 
 export const HOME_PAGE = {
   hero: {
-    title: "Quick and Easy Wheelchair Ramp Rentals",
+    title: "Wheelchair Ramp Rentals",
     subtitle: "Get a temporary wheelchair ramp installed at your home or business today",
     videoUrl: "https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=0&controls=1&rel=0",
     videoTitle: "Same Day Ramps Installation Video",

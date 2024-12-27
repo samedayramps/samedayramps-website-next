@@ -13,11 +13,11 @@ export function Section({ children, className, id }: SectionProps) {
       id={id}
       className={cn(
         "relative",
-        "h-[calc(100vh-64px)]",
+        "min-h-[calc(100dvh-64px)]",
         "w-full",
         "snap-start snap-always",
-        "flex flex-col items-center justify-center",
-        "px-4 sm:px-6",
+        "flex flex-col items-center",
+        "px-4 sm:px-6 py-8 sm:py-12",
         "transform-gpu",
         "will-change-transform",
         "overflow-hidden",

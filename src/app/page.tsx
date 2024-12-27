@@ -13,20 +13,20 @@ export default function Home() {
     <>
       {/* Hero Section */}
       <Section>
-        <Container className="flex flex-col h-full">
-          <div className="flex-1 flex flex-col justify-start pt-8 md:justify-center space-y-6 md:space-y-12">
+        <Container size="small" className="flex flex-col h-full">
+          <div className="flex-1 flex flex-col items-center justify-center -mt-16">
             {/* Text Content */}
-            <div className="text-center">
-              <h1 className="text-3xl md:text-5xl font-bold">
+            <div className="text-center space-y-4 sm:space-y-6">
+              <h1 className="text-[min(8vw,3.5rem)] font-bold whitespace-nowrap tracking-tight">
                 {HOME_PAGE.hero.title}
               </h1>
-              <p className="text-base md:text-xl mt-4 md:mt-6 text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-prose mx-auto">
                 {HOME_PAGE.hero.subtitle}
               </p>
             </div>
 
             {/* Video Player */}
-            <div className="w-full max-w-[85%] md:max-w-full mx-auto">
+            <div className="w-full mt-6 sm:mt-8 md:mt-12 max-w-[min(85%,500px)]">
               <VideoPlayer 
                 src={HOME_PAGE.hero.videoUrl}
                 title={HOME_PAGE.hero.videoTitle}
@@ -35,20 +35,22 @@ export default function Home() {
           </div>
 
           {/* Scroll Down Indicator */}
-          <ScrollIndicator 
-            text={HOME_PAGE.navigation.learnMore.text}
-            targetSectionIndex={HOME_PAGE.navigation.learnMore.targetSectionIndex}
-          />
+          <div className="mt-auto">
+            <ScrollIndicator 
+              text={HOME_PAGE.navigation.learnMore.text}
+              targetSectionIndex={HOME_PAGE.navigation.learnMore.targetSectionIndex}
+            />
+          </div>
         </Container>
       </Section>
 
       {/* Features Section */}
       <Section>
-        <Container className="flex flex-col h-full max-w-3xl">
+        <Container size="small" className="flex flex-col h-full">
           <div className="flex-1 flex flex-col justify-center">
-            <div className="space-y-4 md:space-y-8">
+            <div className="space-y-8">
               <div>
-                <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">
+                <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">
                   {HOME_PAGE.features.title}
                 </h2>
                 
@@ -69,23 +71,17 @@ export default function Home() {
               </div>
             </div>
           </div>
-          
-          {/* Next Section CTA */}
-          <ScrollIndicator 
-            text={HOME_PAGE.navigation.commonQuestions.text}
-            targetSectionIndex={HOME_PAGE.navigation.commonQuestions.targetSectionIndex}
-          />
         </Container>
       </Section>
 
       {/* FAQ Section */}
       <Section>
-        <Container className="flex flex-col h-full max-w-3xl">
+        <Container size="small" className="flex flex-col h-full">
           <div className="flex-1 flex flex-col justify-center">
-            <div className="space-y-4 md:space-y-8">
+            <div className="space-y-8">
               <div>
                 <div className="text-center mb-8">
-                  <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">
+                  <h2 className="text-2xl md:text-3xl font-bold">
                     {HOME_PAGE.faq.title}
                   </h2>
                 </div>
@@ -122,23 +118,17 @@ export default function Home() {
               </div>
             </div>
           </div>
-          
-          {/* Next Section CTA */}
-          <ScrollIndicator 
-            text={HOME_PAGE.navigation.getQuote.text}
-            targetSectionIndex={HOME_PAGE.navigation.getQuote.targetSectionIndex}
-          />
         </Container>
       </Section>
 
       {/* Contact Section */}
       <Section>
-        <Container className="flex flex-col h-full max-w-3xl">
+        <Container size="small" className="flex flex-col h-full">
           <div className="flex-1 flex flex-col justify-center">
-            <div className="space-y-4 md:space-y-8">
+            <div className="space-y-8">
               <div>
                 <div className="text-center mb-8">
-                  <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">
+                  <h2 className="text-2xl md:text-3xl font-bold">
                     {HOME_PAGE.contact.title}
                   </h2>
                   <p className="text-lg text-muted-foreground">
