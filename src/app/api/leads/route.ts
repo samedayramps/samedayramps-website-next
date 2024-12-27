@@ -9,12 +9,26 @@ export async function POST(request: Request) {
     const apiUrl = 'https://www.samedayramps.com/api/leads'
     console.log("[API] Sending to:", apiUrl)
 
+    // Transform the data to match the expected schema
+    const transformedData = {
+      customer: {
+        first_name: data.customer.first_name,
+        last_name: data.customer.last_name,
+        email: data.customer.email || '',
+        phone: data.customer.phone || '',
+      },
+      timeline: data.timeline,
+      notes: data.notes || '',
+    }
+
+    console.log("[API] Transformed data:", transformedData)
+
     const requestConfig: RequestInit = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(transformedData),
     }
     console.log("[API] Request configuration:", requestConfig)
 
