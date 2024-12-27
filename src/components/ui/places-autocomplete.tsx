@@ -42,17 +42,24 @@ export function PlacesAutocomplete({
         // Initialize autocomplete
         autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
           componentRestrictions: { country: "us" },
-          fields: ["formatted_address", "geometry", "address_components"],
+          fields: [
+            "place_id",
+            "formatted_address",
+            "geometry",
+            "address_components"
+          ],
           types: ["address"]
         })
 
         // Add place_changed listener
-        autocompleteRef.current.addListener("place_changed", () => {
+        const placeChangedListener = () => {
           const place = autocompleteRef.current?.getPlace()
           if (place) {
             onPlaceSelect(place)
           }
-        })
+        }
+
+        autocompleteRef.current.addListener("place_changed", placeChangedListener)
 
         setIsLoading(false)
       } catch (error) {

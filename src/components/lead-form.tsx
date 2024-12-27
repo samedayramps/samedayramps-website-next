@@ -94,16 +94,21 @@ export function LeadForm() {
         body: JSON.stringify(values),
       })
 
+      const data = await response.json()
+
       if (!response.ok) {
-        const errorData = await response.json().catch(() => null)
-        throw new Error(errorData?.message || 'Failed to submit lead')
+        throw new Error(data?.message || 'Failed to submit lead')
       }
 
       setSubmitSuccess(true)
       form.reset()
     } catch (error) {
       console.error('Lead submission error:', error)
-      setSubmitError(error instanceof Error ? error.message : 'Failed to submit lead. Please try again.')
+      setSubmitError(
+        error instanceof Error 
+          ? error.message 
+          : 'Failed to submit lead. Please try again.'
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -184,9 +189,7 @@ export function LeadForm() {
                         <AddressInput 
                           placeholder="Enter your address"
                           onPlaceSelect={(place) => {
-                            if (!place.formatted_address || !place.place_id) return
-                            
-                            field.onChange(place.formatted_address)
+                            if (!place) return
                             
                             const addressComponents = place.address_components || []
                             const geometry = place.geometry
@@ -195,16 +198,20 @@ export function LeadForm() {
                               addressComponents.find(c => c.types.includes(type))?.long_name || ''
                             
                             form.setValue('customer.address', {
-                              formatted_address: place.formatted_address,
-                              place_id: place.place_id,
+                              formatted_address: place.formatted_address || '',
+                              place_id: place.place_id || '',
                               street_number: getComponent('street_number'),
                               street_name: getComponent('route'),
                               city: getComponent('locality'),
                               state: getComponent('administrative_area_level_1'),
                               postal_code: getComponent('postal_code'),
                               country: getComponent('country'),
-                              lat: geometry?.location?.lat(),
-                              lng: geometry?.location?.lng(),
+                              lat: geometry?.location?.lat() || 0,
+                              lng: geometry?.location?.lng() || 0,
+                            }, { 
+                              shouldValidate: true,
+                              shouldDirty: true,
+                              shouldTouch: true
                             })
                           }}
                           value={field.value}
