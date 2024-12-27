@@ -345,7 +345,7 @@ export function ExternalLeadForm({
                 name="timeline"
                 render={({ field }) => (
                   <FormItem className="space-y-2">
-                    <FormLabel className="text-xs sm:text-sm font-medium text-muted-foreground/70">
+                    <FormLabel className="text-base font-medium text-muted-foreground">
                       {HOME_PAGE.form.timeline.label}
                     </FormLabel>
                     <FormControl>
@@ -362,10 +362,11 @@ export function ExternalLeadForm({
                             <FormControl>
                               <label
                                 className={cn(
-                                  "flex items-center w-full p-2 sm:p-3 rounded-lg border-2 cursor-pointer transition-all text-sm sm:text-base",
-                                  "hover:bg-accent hover:border-accent hover:text-accent-foreground",
+                                  "flex items-center w-full p-2 sm:p-3 rounded-lg border-2 cursor-pointer transition-all",
+                                  "hover:bg-accent hover:border-accent hover:text-foreground",
+                                  "text-base text-muted-foreground",
                                   field.value === option.value 
-                                    ? "border-primary bg-accent text-accent-foreground" 
+                                    ? "border-accent bg-accent text-foreground" 
                                     : "border-border/40 bg-background/50"
                                 )}
                               >
@@ -384,7 +385,7 @@ export function ExternalLeadForm({
                         ))}
                       </RadioGroup>
                     </FormControl>
-                    <FormMessage className="text-xs px-1" />
+                    <FormMessage className="text-xs mt-1 px-1" />
                   </FormItem>
                 )}
               />
@@ -399,15 +400,12 @@ export function ExternalLeadForm({
                       <div className="relative group">
                         <Input
                           {...field}
-                          className="h-10 sm:h-12 pl-10 pt-5 pb-1 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
-                          placeholder=" "
+                          className="h-10 sm:h-12 pl-10 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors text-base w-full cursor-text" 
+                          placeholder="Additional Notes"
                           value={field.value ?? ''}
                           onChange={(e) => field.onChange(e.target.value || null)}
                         />
                         <MessageSquare className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
-                        <FormLabel className="absolute left-10 top-1 text-xs sm:text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-xs sm:peer-focus:text-sm peer-focus:text-primary peer-focus:top-1 transition-all pointer-events-none">
-                          Additional Notes
-                        </FormLabel>
                       </div>
                     </FormControl>
                     <FormMessage className="text-xs mt-1 px-1" />

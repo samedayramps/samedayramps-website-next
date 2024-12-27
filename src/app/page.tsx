@@ -1,3 +1,5 @@
+"use client"
+
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { VideoPlayer } from "@/components/ui/video-player";
@@ -7,8 +9,23 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import Image from "next/image";
 import { HOME_PAGE } from "@/constants/content";
 import { FeaturesGrid } from "@/components/features-grid";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  // Handle screen size detection
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsLargeScreen(window.innerHeight >= 800)
+    }
+    
+    checkScreenSize()
+    window.addEventListener('resize', checkScreenSize)
+    
+    return () => window.removeEventListener('resize', checkScreenSize)
+  }, [])
+
   return (
     <>
       {/* Hero Section */}
@@ -98,7 +115,12 @@ export default function Home() {
                   />
                 </div>
 
-                <Accordion type="single" collapsible className="w-full">
+                <Accordion 
+                  type="single" 
+                  collapsible 
+                  className="w-full"
+                  defaultValue={isLargeScreen ? "item-0" : undefined}
+                >
                   {HOME_PAGE.faq.list.map((faq, index) => (
                     <AccordionItem 
                       key={index} 
