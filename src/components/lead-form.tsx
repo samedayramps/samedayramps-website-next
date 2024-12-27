@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -72,61 +72,31 @@ export function LeadForm() {
     },
   })
 
-  // Add error watcher
-  useEffect(() => {
-    console.log("[LeadForm] Form validation errors:", form.formState.errors)
-  }, [form.formState.errors])
-
-  // Add form data watcher
-  useEffect(() => {
-    const subscription = form.watch((data) => {
-      console.log("[LeadForm] Form data changed:", data)
-    })
-    return () => subscription.unsubscribe()
-  }, [form])
-
   async function onSubmit(values: z.infer<typeof leadFormSchema>) {
-    console.log("[LeadForm] Starting form submission...", { values })
     setIsSubmitting(true)
     setSubmitError(null)
     
     try {
-      console.log("[LeadForm] Sending POST request to local API")
-      const response = await fetch('/api/leads', {
+      const response = await fetch('https://app.samedayramps.com/api/external/leads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_EXTERNAL_API_KEY}`,
         },
         body: JSON.stringify(values),
       })
 
-      console.log("[LeadForm] Received API response:", {
-        status: response.status,
-        ok: response.ok,
-        statusText: response.statusText,
-      })
-
       if (!response.ok) {
-        let errorMessage = 'Failed to submit lead'
-        try {
-          const errorData = await response.json()
-          console.error("[LeadForm] API error response:", errorData)
-          errorMessage = errorData.message || errorMessage
-        } catch (parseError) {
-          console.error("[LeadForm] Failed to parse error response:", parseError)
-        }
-        throw new Error(errorMessage)
+        const errorData = await response.json().catch(() => null)
+        throw new Error(errorData?.message || 'Failed to submit lead')
       }
 
-      console.log("[LeadForm] Form submitted successfully")
       setSubmitSuccess(true)
       form.reset()
     } catch (error) {
-      console.error("[LeadForm] Form submission error:", error)
-      const errorMessage = error instanceof Error ? error.message : 'Failed to submit lead. Please try again.'
-      setSubmitError(errorMessage)
+      console.error('Lead submission error:', error)
+      setSubmitError(error instanceof Error ? error.message : 'Failed to submit lead. Please try again.')
     } finally {
-      console.log("[LeadForm] Form submission completed")
       setIsSubmitting(false)
     }
   }
@@ -206,24 +176,17 @@ export function LeadForm() {
                         <AddressInput 
                           placeholder="Enter your address"
                           onPlaceSelect={(place) => {
-                            console.log("[LeadForm] Place selected:", place)
-                            if (!place.formatted_address) {
-                              console.warn("[LeadForm] Selected place has no formatted address")
-                              return
-                            }
+                            if (!place.formatted_address) return
                             
                             field.onChange(place.formatted_address)
                             
                             const addressComponents = place.address_components || []
                             const geometry = place.geometry
                             
-                            const getComponent = (type: string) => {
-                              const component = addressComponents.find(c => c.types.includes(type))
-                              console.log(`[LeadForm] Getting address component ${type}:`, component)
-                              return component?.long_name || ''
-                            }
+                            const getComponent = (type: string) => 
+                              addressComponents.find(c => c.types.includes(type))?.long_name || ''
                             
-                            const addressData = {
+                            form.setValue('customer.address', {
                               formatted_address: place.formatted_address,
                               street_number: getComponent('street_number'),
                               street_name: getComponent('route'),
@@ -233,10 +196,7 @@ export function LeadForm() {
                               country: getComponent('country'),
                               lat: geometry?.location?.lat(),
                               lng: geometry?.location?.lng(),
-                            }
-                            
-                            console.log("[LeadForm] Setting address data:", addressData)
-                            form.setValue('customer.address', addressData)
+                            })
                           }}
                           value={field.value}
                         />
