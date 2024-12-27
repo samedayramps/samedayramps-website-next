@@ -5,8 +5,8 @@ import { ScrollIndicator } from "@/components/ui/scroll-indicator";
 import { ExternalLeadForm } from "@/components/lead-form";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 import { HOME_PAGE } from "@/constants/content";
+import { FeaturesGrid } from "@/components/features-grid";
 
 export default function Home() {
   return (
@@ -65,31 +65,7 @@ export default function Home() {
                 </div>
 
                 {/* Features Grid */}
-                <div className="grid gap-4 md:grid-cols-3">
-                  {HOME_PAGE.features.list.map((feature) => (
-                    <div
-                      key={feature.title}
-                      className={cn(
-                        "group p-4 rounded-lg",
-                        "bg-background/50 backdrop-blur-sm",
-                        "transition-all duration-200",
-                        "hover:bg-background/80"
-                      )}
-                    >
-                      <div className="flex flex-col gap-2">
-                        <div className="flex items-center gap-3">
-                          {feature.icon}
-                          <h3 className="text-base md:text-lg font-medium">
-                            {feature.title}
-                          </h3>
-                        </div>
-                        <p className="text-base text-muted-foreground">
-                          {feature.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <FeaturesGrid />
               </div>
             </div>
           </div>
