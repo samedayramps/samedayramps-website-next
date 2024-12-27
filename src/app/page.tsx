@@ -14,7 +14,7 @@ export default function Home() {
       {/* Hero Section */}
       <Section>
         <Container size="small" className="flex flex-col h-full">
-          <div className="flex-1 flex flex-col items-center justify-center -mt-16">
+          <div className="flex-1 flex flex-col items-center justify-center">
             {/* Text Content */}
             <div className="text-center space-y-4 sm:space-y-6">
               <h1 className="text-[min(8vw,3.5rem)] font-bold whitespace-nowrap tracking-tight">
@@ -35,7 +35,7 @@ export default function Home() {
           </div>
 
           {/* Scroll Down Indicator */}
-          <div className="mt-auto">
+          <div className="mt-auto pt-4 sm:pt-8">
             <ScrollIndicator 
               text={HOME_PAGE.navigation.learnMore.text}
               targetSectionIndex={HOME_PAGE.navigation.learnMore.targetSectionIndex}
@@ -47,7 +47,7 @@ export default function Home() {
       {/* Features Section */}
       <Section>
         <Container size="small" className="flex flex-col h-full">
-          <div className="flex-1 flex flex-col justify-center">
+          <div className="flex-1 flex flex-col justify-center py-4 sm:py-8">
             <div className="space-y-8">
               <div>
                 <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">
@@ -77,7 +77,7 @@ export default function Home() {
       {/* FAQ Section */}
       <Section>
         <Container size="small" className="flex flex-col h-full">
-          <div className="flex-1 flex flex-col justify-center">
+          <div className="flex-1 flex flex-col justify-center py-4 sm:py-8">
             <div className="space-y-8">
               <div>
                 <div className="text-center mb-8">
@@ -124,7 +124,7 @@ export default function Home() {
       {/* Contact Section */}
       <Section>
         <Container size="small" className="flex flex-col h-full">
-          <div className="flex-1 flex flex-col justify-center">
+          <div className="flex-1 flex flex-col justify-center py-4 sm:py-8">
             <div className="space-y-8">
               <div>
                 <div className="text-center mb-8">
