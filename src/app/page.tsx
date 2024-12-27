@@ -123,25 +123,11 @@ export default function Home() {
 
       {/* Contact Section */}
       <Section>
-        <Container size="small" className="flex flex-col h-full">
-          <div className="flex-1 flex flex-col justify-center py-4 sm:py-8">
-            <div className="space-y-8">
-              <div>
-                <div className="text-center mb-8">
-                  <h2 className="text-2xl md:text-3xl font-bold">
-                    {HOME_PAGE.contact.title}
-                  </h2>
-                  <p className="text-lg text-muted-foreground">
-                    {HOME_PAGE.contact.subtitle}
-                  </p>
-                </div>
-                <ExternalLeadForm 
-                  apiKey={process.env.NEXT_PUBLIC_LEAD_API_KEY || ''}
-                  apiEndpoint={process.env.NEXT_PUBLIC_LEAD_API_ENDPOINT || ''}
-                />
-              </div>
-            </div>
-          </div>
+        <Container size="small" className="h-full flex flex-col justify-center">
+          <ExternalLeadForm 
+            apiKey={process.env.NEXT_PUBLIC_LEAD_API_KEY || ''}
+            apiEndpoint={process.env.NEXT_PUBLIC_LEAD_API_ENDPOINT || ''}
+          />
         </Container>
       </Section>
     </>

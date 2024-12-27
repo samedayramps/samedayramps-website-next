@@ -48,10 +48,7 @@ export const HOME_PAGE = {
       },
     ],
   },
-  contact: {
-    title: "",
-    subtitle: "",
-  },
+  
   images: {
     ramp1: {
       src: "/ramp1.webp",
