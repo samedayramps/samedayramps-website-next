@@ -174,7 +174,9 @@ export function ExternalLeadForm({
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}`,
+          'Accept': 'application/json'
         },
+        mode: 'cors',
         body: JSON.stringify(values),
       })
 
