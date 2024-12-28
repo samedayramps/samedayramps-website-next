@@ -19,18 +19,22 @@ import {
   Phone, 
   MapPin, 
   MessageSquare,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { HOME_PAGE } from "@/constants/content"
 import { cn } from "@/lib/utils"
+import { useToast } from "@/hooks/use-toast"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 // Form validation schema
 const leadFormSchema = z.object({
   customer: z.object({
     first_name: z.string().min(1, "First name is required"),
     last_name: z.string().min(1, "Last name is required"),
-    email: z.string().email().nullable(),
-    phone: z.string().min(10, "Phone number must be at least 10 digits").nullable(),
+    email: z.string().email("Please enter a valid email address"),
+    phone: z.string().min(10, "Phone number must be at least 10 digits"),
     address: z.object({
       formatted_address: z.string().min(1, "Installation address is required"),
       street_number: z.string().nullable(),
@@ -57,16 +61,20 @@ interface ExternalLeadFormProps {
   onError?: (error: Error) => void
 }
 
+type SubmissionStatus = 'idle' | 'submitting' | 'success' | 'error'
+
 export function ExternalLeadForm({
   apiKey,
   apiEndpoint,
   onSuccess,
   onError,
 }: ExternalLeadFormProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false)
+  const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>('idle')
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
+  const { toast } = useToast()
 
   const form = useForm<LeadFormValues>({
     resolver: zodResolver(leadFormSchema),
@@ -74,8 +82,8 @@ export function ExternalLeadForm({
       customer: {
         first_name: "",
         last_name: "",
-        email: null,
-        phone: null,
+        email: "",
+        phone: "",
         address: {
           formatted_address: "",
           street_number: null,
@@ -115,7 +123,6 @@ export function ExternalLeadForm({
   useEffect(() => {
     if (!isGoogleMapsLoaded || !inputRef.current) return
 
-    // Store ref in variable for cleanup
     const input = inputRef.current
 
     try {
@@ -163,11 +170,14 @@ export function ExternalLeadForm({
       }
     } catch (error) {
       console.error('Error initializing Google Places Autocomplete:', error)
+      setErrorMessage('Error loading address autocomplete')
     }
   }, [isGoogleMapsLoaded, form])
 
   async function onSubmit(values: LeadFormValues) {
-    setIsSubmitting(true)
+    setSubmissionStatus('submitting')
+    setErrorMessage(null)
+
     try {
       const response = await fetch(apiEndpoint, {
         method: 'POST',
@@ -180,28 +190,7 @@ export function ExternalLeadForm({
         body: JSON.stringify(values),
       })
 
-      // Log the raw response for debugging
-      console.log('Response status:', response.status)
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()))
-
-      // Check if the response has content before trying to parse it
-      const contentType = response.headers.get('content-type')
-      let data
-      
-      if (contentType?.includes('application/json')) {
-        const text = await response.text()
-        console.log('Response body:', text)
-        
-        try {
-          data = text ? JSON.parse(text) : null
-        } catch (parseError) {
-          console.error('Error parsing JSON:', parseError)
-          throw new Error('Invalid JSON response from server')
-        }
-      } else {
-        console.error('Unexpected content type:', contentType)
-        throw new Error('Server did not return JSON')
-      }
+      const data = await response.json()
 
       if (!response.ok) {
         // Handle validation errors
@@ -215,17 +204,30 @@ export function ExternalLeadForm({
       }
 
       if (data?.success && data?.leadId) {
+        setSubmissionStatus('success')
         onSuccess?.(data.leadId)
         form.reset()
+        
+        toast({
+          title: "Quote Request Submitted",
+          description: "We'll be in touch with you shortly!",
+          duration: 5000,
+        })
       } else {
-        console.error('Unexpected response format:', data)
         throw new Error('Invalid response format')
       }
     } catch (error) {
       console.error('Error submitting lead:', error)
+      setSubmissionStatus('error')
+      setErrorMessage((error as Error).message || 'Failed to submit form')
       onError?.(error as Error)
-    } finally {
-      setIsSubmitting(false)
+      
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to submit form. Please try again.",
+        duration: 5000,
+      })
     }
   }
 
@@ -233,8 +235,26 @@ export function ExternalLeadForm({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-lg mx-auto landscape:max-w-3xl">
         <div className="rounded-xl bg-card shadow-lg border border-border/40 overflow-hidden">
-          {/* Form Content */}
           <div className="p-4 space-y-4">
+            {/* Form Status Alerts */}
+            {submissionStatus === 'success' && (
+              <Alert className="bg-green-500/10 text-green-500 border-green-500/20">
+                <CheckCircle2 className="h-4 w-4" />
+                <AlertTitle>Success!</AlertTitle>
+                <AlertDescription>
+                  Your quote request has been submitted. We&apos;ll be in touch shortly!
+                </AlertDescription>
+              </Alert>
+            )}
+            
+            {errorMessage && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{errorMessage}</AlertDescription>
+              </Alert>
+            )}
+
             {/* Main Title */}
             <div className="text-center">
               <h2 className="text-lg font-semibold text-foreground/90">
@@ -308,8 +328,7 @@ export function ExternalLeadForm({
                               type="email"
                               className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
                               placeholder="Email"
-                              value={field.value ?? ''}
-                              onChange={(e) => field.onChange(e.target.value || null)}
+                              value={field.value}
                             />
                             <Mail className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
                           </div>
@@ -330,8 +349,7 @@ export function ExternalLeadForm({
                               type="tel"
                               className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
                               placeholder="Phone"
-                              value={field.value ?? ''}
-                              onChange={(e) => field.onChange(e.target.value || null)}
+                              value={field.value}
                             />
                             <Phone className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
                           </div>
@@ -443,7 +461,7 @@ export function ExternalLeadForm({
             {/* Submit Button */}
             <Button
               type="submit"
-              disabled={isSubmitting}
+              disabled={submissionStatus === 'submitting'}
               className={cn(
                 "w-full h-10 font-medium rounded-lg",
                 "bg-primary hover:bg-primary/90 text-primary-foreground",
@@ -451,7 +469,7 @@ export function ExternalLeadForm({
                 "transition-all duration-200"
               )}
             >
-              {isSubmitting ? (
+              {submissionStatus === 'submitting' ? (
                 <div className="flex items-center justify-center gap-2">
                   <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
                   <span>Submitting...</span>
