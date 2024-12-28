@@ -44,7 +44,7 @@ const leadFormSchema = z.object({
       place_id: z.string().nullable(),
     }),
   }),
-  timeline: z.string().nullable(),
+  timeline: z.enum(['ASAP', 'THIS_WEEK', 'THIS_MONTH', 'FLEXIBLE']).nullable(),
   notes: z.string().nullable(),
 })
 
@@ -180,14 +180,25 @@ export function ExternalLeadForm({
         body: JSON.stringify(values),
       })
 
+      const data = await response.json()
+
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.message || 'Failed to submit lead')
+        // Handle validation errors
+        if (response.status === 400 && data.error === 'Validation error') {
+          const errorMessage = data.details
+            .map((err: { path: string; message: string }) => `${err.path}: ${err.message}`)
+            .join(', ')
+          throw new Error(errorMessage)
+        }
+        throw new Error(data.error || 'Failed to submit lead')
       }
 
-      const data = await response.json()
-      onSuccess?.(data.leadId)
-      form.reset()
+      if (data.success && data.leadId) {
+        onSuccess?.(data.leadId)
+        form.reset()
+      } else {
+        throw new Error('Invalid response format')
+      }
     } catch (error) {
       console.error('Error submitting lead:', error)
       onError?.(error as Error)
@@ -394,7 +405,7 @@ export function ExternalLeadForm({
                             {...field}
                             className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
                             placeholder="Additional Notes (optional)"
-                            value={field.value ?? ''}
+                            value={typeof field.value === 'string' ? field.value : ''}
                             onChange={(e) => field.onChange(e.target.value || null)}
                           />
                           <MessageSquare className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
