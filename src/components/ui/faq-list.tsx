@@ -201,7 +201,7 @@ export function FAQList({
                         inactiveColor,
                         isExpanded && activeColor
                       )}>
-                        <span className="text-sm landscape:text-base xl:text-lg">
+                        <span className="text-base landscape:text-base xl:text-lg">
                           {faq.question}
                         </span>
                       </span>
@@ -214,7 +214,7 @@ export function FAQList({
                       )}
                     >
                       <div className="space-y-2">
-                        <p className="text-sm landscape:text-base xl:text-lg text-muted-foreground">
+                        <p className="text-base landscape:text-base xl:text-lg text-muted-foreground">
                           {faq.answer}
                         </p>
                         {isLandscape && isExpanded && (

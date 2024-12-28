@@ -43,7 +43,7 @@ export function FAQSection() {
 
             {/* Image */}
             <div className="relative flex items-center portrait:order-first landscape:order-last">
-              <div className="relative w-full aspect-[4/3] md:aspect-[16/10] rounded-lg overflow-hidden shadow-lg">
+              <div className="relative w-full aspect-[16/9] md:aspect-[4/3] landscape:aspect-[16/10] rounded-lg overflow-hidden shadow-lg">
                 <Image
                   src={HOME_PAGE.images.ramp2.src}
                   alt={HOME_PAGE.images.ramp2.alt}

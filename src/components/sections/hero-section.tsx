@@ -35,7 +35,7 @@ export function HeroSection() {
                   Wheelchair Ramp<br />
                   Rentals
                 </h1>
-                <p className="text-sm landscape:text-base xl:text-xl text-muted-foreground">
+                <p className="text-base landscape:text-base xl:text-xl text-muted-foreground">
                   {HOME_PAGE.hero.subtitle}
                 </p>
               </div>
@@ -44,11 +44,11 @@ export function HeroSection() {
               <div>
                 <Button 
                   size="lg" 
-                  className="h-10 px-6 text-sm landscape:h-12 landscape:px-8 landscape:text-base xl:text-lg rounded-full"
+                  className="h-11 px-7 text-base landscape:h-12 landscape:px-8 landscape:text-base xl:text-lg rounded-full"
                   onClick={handleQuoteClick}
                 >
                   Get Your Quote
-                  <ArrowRight className="ml-2 h-3.5 w-3.5 landscape:h-4 landscape:w-4 xl:h-5 xl:w-5" />
+                  <ArrowRight className="ml-2 h-4 w-4 landscape:h-4 landscape:w-4 xl:h-5 xl:w-5" />
                 </Button>
               </div>
             </div>

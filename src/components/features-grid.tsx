@@ -41,7 +41,7 @@ export function FeaturesGrid() {
               <div className="w-4 h-4 landscape:w-5 landscape:h-5 shrink-0 text-primary">
                 {feature.icon}
               </div>
-              <h3 className="text-sm landscape:text-base xl:text-lg font-medium">
+              <h3 className="text-base landscape:text-base xl:text-lg font-medium">
                 {feature.title}
               </h3>
             </div>
@@ -52,7 +52,7 @@ export function FeaturesGrid() {
                 : "grid-rows-[0fr]"
             )}>
               <div className="overflow-hidden">
-                <p className="text-sm landscape:text-base xl:text-lg text-muted-foreground">
+                <p className="text-base landscape:text-base xl:text-lg text-muted-foreground">
                   {feature.description}
                 </p>
               </div>
