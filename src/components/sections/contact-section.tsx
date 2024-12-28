@@ -6,7 +6,7 @@ import { ExternalLeadForm } from "@/components/lead-form";
 
 export function ContactSection() {
   return (
-    <Section>
+    <Section id="contact-section">
       <Container 
         size="medium"
         className="h-full flex flex-col justify-center landscape:justify-center landscape:max-w-4xl"
