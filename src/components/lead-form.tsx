@@ -56,7 +56,6 @@ type LeadFormValues = z.infer<typeof leadFormSchema>
 
 interface ExternalLeadFormProps {
   apiKey: string
-  apiEndpoint: string
   onSuccess?: (leadId: string) => void
   onError?: (error: Error) => void
 }
@@ -65,7 +64,6 @@ type SubmissionStatus = 'idle' | 'submitting' | 'success' | 'error'
 
 export function ExternalLeadForm({
   apiKey,
-  apiEndpoint,
   onSuccess,
   onError,
 }: ExternalLeadFormProps) {
@@ -179,7 +177,7 @@ export function ExternalLeadForm({
     setErrorMessage(null)
 
     try {
-      const response = await fetch(apiEndpoint, {
+      const response = await fetch(process.env.NEXT_PUBLIC_LEAD_API_URL!, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -190,7 +188,27 @@ export function ExternalLeadForm({
         body: JSON.stringify(values),
       })
 
-      const data = await response.json()
+      // Log response details for debugging
+      console.log('Response status:', response.status)
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()))
+      console.log('API URL:', process.env.NEXT_PUBLIC_LEAD_API_URL)
+      
+      // Check if the response is empty
+      const responseText = await response.text()
+      console.log('Raw response:', responseText)
+      
+      if (!responseText) {
+        throw new Error('Empty response received from server')
+      }
+      
+      // Try to parse the JSON
+      let data
+      try {
+        data = JSON.parse(responseText)
+      } catch (parseError) {
+        console.error('JSON Parse Error:', parseError)
+        throw new Error('Invalid JSON response from server')
+      }
 
       if (!response.ok) {
         // Handle validation errors
@@ -219,13 +237,14 @@ export function ExternalLeadForm({
     } catch (error) {
       console.error('Error submitting lead:', error)
       setSubmissionStatus('error')
-      setErrorMessage((error as Error).message || 'Failed to submit form')
+      const errorMsg = error instanceof Error ? error.message : 'Failed to submit form'
+      setErrorMessage(errorMsg)
       onError?.(error as Error)
       
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to submit form. Please try again.",
+        description: errorMsg,
         duration: 5000,
       })
     }

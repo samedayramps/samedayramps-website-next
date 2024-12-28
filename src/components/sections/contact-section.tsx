@@ -12,8 +12,7 @@ export function ContactSection() {
         className="h-full flex flex-col justify-center landscape:justify-center landscape:max-w-4xl"
       >
         <ExternalLeadForm 
-          apiKey={process.env.NEXT_PUBLIC_LEAD_API_KEY || ''}
-          apiEndpoint={process.env.NEXT_PUBLIC_LEAD_API_ENDPOINT || ''}
+          apiKey={process.env.NEXT_PUBLIC_EXTERNAL_API_KEY || ''}
         />
       </Container>
     </Section>
