@@ -180,23 +180,45 @@ export function ExternalLeadForm({
         body: JSON.stringify(values),
       })
 
-      const data = await response.json()
+      // Log the raw response for debugging
+      console.log('Response status:', response.status)
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()))
+
+      // Check if the response has content before trying to parse it
+      const contentType = response.headers.get('content-type')
+      let data
+      
+      if (contentType?.includes('application/json')) {
+        const text = await response.text()
+        console.log('Response body:', text)
+        
+        try {
+          data = text ? JSON.parse(text) : null
+        } catch (parseError) {
+          console.error('Error parsing JSON:', parseError)
+          throw new Error('Invalid JSON response from server')
+        }
+      } else {
+        console.error('Unexpected content type:', contentType)
+        throw new Error('Server did not return JSON')
+      }
 
       if (!response.ok) {
         // Handle validation errors
-        if (response.status === 400 && data.error === 'Validation error') {
+        if (response.status === 400 && data?.error === 'Validation error') {
           const errorMessage = data.details
-            .map((err: { path: string; message: string }) => `${err.path}: ${err.message}`)
+            ?.map((err: { path: string; message: string }) => `${err.path}: ${err.message}`)
             .join(', ')
-          throw new Error(errorMessage)
+          throw new Error(errorMessage || 'Validation failed')
         }
-        throw new Error(data.error || 'Failed to submit lead')
+        throw new Error(data?.error || `Request failed with status ${response.status}`)
       }
 
-      if (data.success && data.leadId) {
+      if (data?.success && data?.leadId) {
         onSuccess?.(data.leadId)
         form.reset()
       } else {
+        console.error('Unexpected response format:', data)
         throw new Error('Invalid response format')
       }
     } catch (error) {
