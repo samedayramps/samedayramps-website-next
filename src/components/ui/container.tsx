@@ -1,29 +1,35 @@
 import { cn } from "@/lib/utils";
+import { type VariantProps, cva } from "class-variance-authority";
 
-interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+const containerVariants = cva(
+  "w-full mx-auto px-4 sm:px-6 md:px-8",
+  {
+    variants: {
+      size: {
+        small: "max-w-2xl landscape:max-w-[50vw]",
+        medium: "max-w-4xl landscape:max-w-[70vw]",
+        large: "max-w-screen-xl landscape:max-w-[90vw]",
+      }
+    },
+    defaultVariants: {
+      size: "large"
+    }
+  }
+);
+
+interface ContainerProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof containerVariants> {
   children: React.ReactNode;
-  size?: 'default' | 'small' | 'large';
 }
 
 export function Container({ 
   children, 
-  className, 
-  size = 'default',
+  className,
+  size,
   ...props 
 }: ContainerProps) {
   return (
     <div 
-      className={cn(
-        // Base styles
-        "w-full mx-auto px-3 sm:px-4 lg:px-6",
-        // Responsive max-widths
-        {
-          'max-w-6xl lg:max-w-7xl': size === 'large',
-          'max-w-3xl lg:max-w-4xl': size === 'default',
-          'max-w-xl lg:max-w-2xl': size === 'small',
-        },
-        className
-      )} 
+      className={cn(containerVariants({ size }), className)} 
       {...props}
     >
       {children}

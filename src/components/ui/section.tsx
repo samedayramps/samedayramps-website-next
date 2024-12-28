@@ -19,13 +19,9 @@ export function Section({ children, className, id, isFirstSection }: SectionProp
         "snap-start snap-always",
         "flex flex-col items-center justify-center",
         {
-          "pt-16 sm:pt-20": isFirstSection,
-          "py-6 sm:py-8": !isFirstSection,
+          "pt-6": isFirstSection,
+          "py-6": !isFirstSection,
         },
-        "px-4 sm:px-6",
-        "transform-gpu",
-        "will-change-transform",
-        "overflow-hidden",
         className
       )}
     >

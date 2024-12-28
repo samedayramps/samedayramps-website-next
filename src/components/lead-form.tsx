@@ -10,7 +10,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "./ui/form"
 import { Button } from "./ui/button"
@@ -197,232 +196,229 @@ export function ExternalLeadForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-xl mx-auto">
-        <div className="rounded-xl bg-card shadow-lg border border-border/40 p-4 sm:p-6">
-          <div className="space-y-3 sm:space-y-4">
-            {/* Title */}
-            <div className="text-center mb-2">
-              <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground/90">Request a Ramp Rental Quote</h2>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-lg mx-auto landscape:max-w-3xl">
+        <div className="rounded-xl bg-card shadow-lg border border-border/40 overflow-hidden">
+          {/* Form Content */}
+          <div className="p-4 space-y-4">
+            {/* Main Title */}
+            <div className="text-center">
+              <h2 className="text-lg font-semibold text-foreground/90">
+                Request a Quote
+              </h2>
             </div>
 
-            {/* Form Fields Container */}
-            <div className="space-y-3 sm:space-y-4">
-              {/* Names Section */}
-              <div className="grid grid-cols-2 gap-3">
-                <FormField
-                  control={form.control}
-                  name="customer.first_name"
-                  render={({ field }) => (
-                    <FormItem className="relative">
-                      <FormControl>
-                        <div className="relative group">
-                          <Input 
-                            {...field} 
-                            className="h-10 sm:h-12 pl-10 pt-5 pb-1 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
-                            placeholder=" "
-                          />
-                          <User2 className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
-                          <FormLabel className="absolute left-10 top-1 text-xs sm:text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-xs sm:peer-focus:text-sm peer-focus:text-primary peer-focus:top-1 transition-all pointer-events-none">
-                            First Name
-                          </FormLabel>
-                        </div>
-                      </FormControl>
-                      <FormMessage className="text-xs mt-1 px-1" />
-                    </FormItem>
-                  )}
-                />
+            {/* Main Form Grid */}
+            <div className="grid grid-cols-1 landscape:grid-cols-[1.2fr,1fr] gap-4">
+              {/* Left Column - Contact Info */}
+              <div className="space-y-3">
+                {/* Section Title */}
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-medium text-muted-foreground">Contact Info</h3>
+                  <div className="flex-1 h-px bg-border/40" />
+                </div>
+                
+                {/* Name Fields */}
+                <div className="grid grid-cols-2 gap-2">
+                  <FormField
+                    control={form.control}
+                    name="customer.first_name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="relative group">
+                            <Input 
+                              {...field} 
+                              className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
+                              placeholder="First Name"
+                            />
+                            <User2 className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-xs mt-1" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="customer.last_name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="relative group">
+                            <Input 
+                              {...field} 
+                              className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
+                              placeholder="Last Name"
+                            />
+                            <User2 className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-xs mt-1" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
+                {/* Contact Fields */}
+                <div className="grid grid-cols-2 gap-2">
+                  <FormField
+                    control={form.control}
+                    name="customer.email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="relative group">
+                            <Input 
+                              {...field}
+                              type="email"
+                              className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
+                              placeholder="Email"
+                              value={field.value ?? ''}
+                              onChange={(e) => field.onChange(e.target.value || null)}
+                            />
+                            <Mail className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-xs mt-1" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="customer.phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="relative group">
+                            <Input 
+                              {...field}
+                              type="tel"
+                              className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
+                              placeholder="Phone"
+                              value={field.value ?? ''}
+                              onChange={(e) => field.onChange(e.target.value || null)}
+                            />
+                            <Phone className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-xs mt-1" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {/* Address Field */}
                 <FormField
                   control={form.control}
-                  name="customer.last_name"
+                  name="customer.address.formatted_address"
                   render={({ field }) => (
-                    <FormItem className="relative">
+                    <FormItem>
                       <FormControl>
                         <div className="relative group">
-                          <Input 
-                            {...field} 
-                            className="h-10 sm:h-12 pl-10 pt-5 pb-1 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
-                            placeholder=" "
+                          <Input
+                            {...field}
+                            ref={inputRef}
+                            type="text"
+                            className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
+                            placeholder="Installation Address"
+                            disabled={!isGoogleMapsLoaded}
+                            autoComplete="off"
+                            value={field.value || ''}
                           />
-                          <User2 className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
-                          <FormLabel className="absolute left-10 top-1 text-xs sm:text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-xs sm:peer-focus:text-sm peer-focus:text-primary peer-focus:top-1 transition-all pointer-events-none">
-                            Last Name
-                          </FormLabel>
+                          <MapPin className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
                         </div>
                       </FormControl>
-                      <FormMessage className="text-xs mt-1 px-1" />
+                      <FormMessage className="text-xs mt-1" />
                     </FormItem>
                   )}
                 />
               </div>
 
-              {/* Contact Fields */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Right Column - Timeline and Notes */}
+              <div className="space-y-3">
+                {/* Timeline Field */}
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-medium text-muted-foreground">When do you need it?</h3>
+                  <div className="flex-1 h-px bg-border/40" />
+                </div>
+
                 <FormField
                   control={form.control}
-                  name="customer.email"
+                  name="timeline"
                   render={({ field }) => (
-                    <FormItem className="relative">
+                    <FormItem className="space-y-2">
                       <FormControl>
-                        <div className="relative group">
-                          <Input 
-                            {...field}
-                            type="email"
-                            className="h-10 sm:h-12 pl-10 pt-5 pb-1 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
-                            placeholder=" "
-                            value={field.value ?? ''}
-                            onChange={(e) => field.onChange(e.target.value || null)}
-                          />
-                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
-                          <FormLabel className="absolute left-10 top-1 text-xs sm:text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-xs sm:peer-focus:text-sm peer-focus:text-primary peer-focus:top-1 transition-all pointer-events-none">
-                            Email
-                          </FormLabel>
-                        </div>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value || undefined}
+                          className="grid grid-cols-2 gap-2"
+                        >
+                          {HOME_PAGE.form.timeline.options.map((option) => (
+                            <FormItem key={option.value}>
+                              <FormControl>
+                                <label
+                                  className={cn(
+                                    "flex items-center justify-center w-full h-10",
+                                    "rounded-lg border cursor-pointer transition-all text-center",
+                                    "hover:bg-primary/5 hover:border-primary/30",
+                                    "text-sm",
+                                    field.value === option.value 
+                                      ? "border-primary bg-primary/5 text-primary" 
+                                      : "border-border/60 bg-background/50 text-muted-foreground"
+                                  )}
+                                >
+                                  <RadioGroupItem value={option.value} className="sr-only" />
+                                  {option.label}
+                                </label>
+                              </FormControl>
+                            </FormItem>
+                          ))}
+                        </RadioGroup>
                       </FormControl>
-                      <FormMessage className="text-xs mt-1 px-1" />
+                      <FormMessage className="text-xs" />
                     </FormItem>
                   )}
                 />
 
+                {/* Notes Field */}
                 <FormField
                   control={form.control}
-                  name="customer.phone"
+                  name="notes"
                   render={({ field }) => (
-                    <FormItem className="relative">
+                    <FormItem>
                       <FormControl>
                         <div className="relative group">
-                          <Input 
+                          <Input
                             {...field}
-                            type="tel"
-                            className="h-10 sm:h-12 pl-10 pt-5 pb-1 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
-                            placeholder=" "
+                            className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
+                            placeholder="Additional Notes (optional)"
                             value={field.value ?? ''}
                             onChange={(e) => field.onChange(e.target.value || null)}
                           />
-                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
-                          <FormLabel className="absolute left-10 top-1 text-xs sm:text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-xs sm:peer-focus:text-sm peer-focus:text-primary peer-focus:top-1 transition-all pointer-events-none">
-                            Phone
-                          </FormLabel>
+                          <MessageSquare className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
                         </div>
                       </FormControl>
-                      <FormMessage className="text-xs mt-1 px-1" />
+                      <FormMessage className="text-xs mt-1" />
                     </FormItem>
                   )}
                 />
               </div>
-
-              {/* Address Field */}
-              <FormField
-                control={form.control}
-                name="customer.address.formatted_address"
-                render={({ field }) => (
-                  <FormItem className="relative">
-                    <FormControl>
-                      <div className="relative group">
-                        <Input
-                          {...field}
-                          ref={inputRef}
-                          type="text"
-                          className="h-10 sm:h-12 pl-10 pt-5 pb-1 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background peer transition-colors text-base w-full cursor-text" 
-                          placeholder=" "
-                          disabled={!isGoogleMapsLoaded}
-                          autoComplete="off"
-                        />
-                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
-                        <FormLabel className="absolute left-10 top-1 text-xs sm:text-sm font-medium text-muted-foreground/70 cursor-text peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:text-xs sm:peer-focus:text-sm peer-focus:text-primary peer-focus:top-1 transition-all pointer-events-none">
-                          Installation Address
-                        </FormLabel>
-                      </div>
-                    </FormControl>
-                    <FormMessage className="text-xs mt-1 px-1" />
-                  </FormItem>
-                )}
-              />
-
-              {/* Timeline Field */}
-              <FormField
-                control={form.control}
-                name="timeline"
-                render={({ field }) => (
-                  <FormItem className="space-y-2">
-                    <FormLabel className="text-base font-medium text-muted-foreground">
-                      {HOME_PAGE.form.timeline.label}
-                    </FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value || undefined}
-                        className="grid grid-cols-2 gap-2"
-                      >
-                        {HOME_PAGE.form.timeline.options.map((option) => (
-                          <FormItem 
-                            key={option.value}
-                            className="relative"
-                          >
-                            <FormControl>
-                              <label
-                                className={cn(
-                                  "flex items-center w-full p-2 sm:p-3 rounded-lg border-2 cursor-pointer transition-all",
-                                  "hover:bg-accent hover:border-accent hover:text-foreground",
-                                  "text-base text-muted-foreground",
-                                  field.value === option.value 
-                                    ? "border-accent bg-accent text-foreground" 
-                                    : "border-border/40 bg-background/50"
-                                )}
-                              >
-                                <RadioGroupItem 
-                                  value={option.value} 
-                                  className="sr-only"
-                                />
-                                <div className="ml-1">
-                                  <span className="block font-medium">
-                                    {option.label}
-                                  </span>
-                                </div>
-                              </label>
-                            </FormControl>
-                          </FormItem>
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage className="text-xs mt-1 px-1" />
-                  </FormItem>
-                )}
-              />
-
-              {/* Notes Field */}
-              <FormField
-                control={form.control}
-                name="notes"
-                render={({ field }) => (
-                  <FormItem className="relative">
-                    <FormControl>
-                      <div className="relative group">
-                        <Input
-                          {...field}
-                          className="h-10 sm:h-12 pl-10 rounded-lg bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors text-base w-full cursor-text" 
-                          placeholder="Additional Notes"
-                          value={field.value ?? ''}
-                          onChange={(e) => field.onChange(e.target.value || null)}
-                        />
-                        <MessageSquare className="absolute left-3 top-1/2 -translate-y-1/2 h-[18px] w-[18px] text-muted-foreground/50 peer-focus:text-primary transition-colors pointer-events-none" />
-                      </div>
-                    </FormControl>
-                    <FormMessage className="text-xs mt-1 px-1" />
-                  </FormItem>
-                )}
-              />
             </div>
 
             {/* Submit Button */}
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full h-10 sm:h-12 rounded-lg font-medium bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm transition-colors"
+              className={cn(
+                "w-full h-10 font-medium rounded-lg",
+                "bg-primary hover:bg-primary/90 text-primary-foreground",
+                "shadow-md shadow-primary/10 hover:shadow-primary/20",
+                "transition-all duration-200"
+              )}
             >
               {isSubmitting ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                <div className="flex items-center justify-center gap-2">
+                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
                   <span>Submitting...</span>
                 </div>
               ) : (

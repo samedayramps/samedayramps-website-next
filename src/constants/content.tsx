@@ -4,7 +4,7 @@ export const HOME_PAGE = {
   hero: {
     title: "Wheelchair Ramp Rentals",
     subtitle: "Get a temporary wheelchair ramp installed at your home or business today",
-    videoUrl: "https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=0&controls=1&rel=0",
+    videoUrl: "https://www.youtube.com/embed/t-_3NfcNH4A?autoplay=0&controls=1&rel=0",
     videoTitle: "Same Day Ramps Installation Video",
   },
   features: {
