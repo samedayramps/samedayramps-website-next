@@ -84,6 +84,12 @@ export function Header() {
             >
               FAQ
             </button>
+            <Link 
+              href="/resources"
+              className="text-sm font-medium hover:text-primary-foreground/80 transition-colors"
+            >
+              Resources
+            </Link>
           </div>
 
           {/* Desktop Actions */}
@@ -123,6 +129,13 @@ export function Header() {
                     >
                       FAQ
                     </button>
+                    <Link 
+                      href="/resources"
+                      className="block w-full text-left text-lg font-medium hover:text-primary"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Resources
+                    </Link>
                   </div>
                   <Button 
                     onClick={handleGetQuote}
