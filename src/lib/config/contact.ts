@@ -1,7 +1,7 @@
 export const contactConfig = {
   wheelchairRamps: {
-    title: "Get A Quote",
-    subtitle: "Fill out the form below.",
+    title: "Fill out the form to get a quote for a wheelchair ramp rental.",
+    subtitle: "",
     media: {
       src: "/ramp5.webp",
       alt: "Professional wheelchair ramp installation team"

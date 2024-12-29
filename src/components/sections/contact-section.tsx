@@ -46,20 +46,14 @@ export function ContactSection({
             "landscape:pr-6 xl:pr-8"
           )}>
             <div className="space-y-2 landscape:space-y-1">
-              <h2 className={cn(
-                "text-[clamp(1.75rem,6vw,3.5rem)]",
-                "landscape:text-[clamp(1.75rem,3.5vw,2.75rem)]",
-                "font-bold tracking-tight leading-[1.1]"
-              )}>
-                {content.title}
-              </h2>
               <p className={cn(
-                "text-[clamp(1rem,2vw,1.25rem)]",
-                "landscape:text-[clamp(0.875rem,1.75vw,1.125rem)]",
+                "text-[clamp(1.25rem,3vw,1.75rem)]",
+                "landscape:text-[clamp(1.25rem,2.5vw,1.5rem)]",
+                "font-medium tracking-tight leading-[1.2]",
                 theme === "dark" ? "text-white/80" : "text-muted-foreground",
                 "max-w-2xl landscape:max-w-none mx-auto"
               )}>
-                {content.subtitle}
+                {content.title}
               </p>
             </div>
           </div>
