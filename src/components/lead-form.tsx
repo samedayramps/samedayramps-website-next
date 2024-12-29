@@ -482,7 +482,8 @@ export function ExternalLeadForm({
                             "bg-background/50 hover:bg-background/80 focus:bg-background transition-colors border-border/60",
                             "h-[min(2.25rem,8vh)] md:h-11",
                             "text-[min(1rem,3.5vw)] sm:text-base",
-                            "text-muted-foreground/60"
+                            "[&>*]:text-muted-foreground/80",
+                            "data-[value]:text-foreground"
                           )}>
                             <SelectValue placeholder="Select a timeframe" />
                           </SelectTrigger>
