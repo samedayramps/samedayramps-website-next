@@ -2,7 +2,6 @@
 
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
@@ -26,11 +25,6 @@ export function HowItWorksSection({
   className,
   theme = "light"
 }: HowItWorksSectionProps) {
-  const handleCtaClick = (href: string) => {
-    const targetSection = document.getElementById(href);
-    targetSection?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   const contentSection = (
     <div className={cn(
       "flex flex-col justify-center",
@@ -74,23 +68,6 @@ export function HowItWorksSection({
           </li>
         ))}
       </ul>
-
-      {/* CTA Button */}
-      <div className="flex justify-center landscape:justify-start mt-2">
-        <Button 
-          variant="secondary"
-          className={cn(
-            "h-10 px-4",
-            "font-semibold text-base",
-            "whitespace-nowrap",
-            "w-full sm:w-auto",
-            "bg-accent hover:bg-accent/90 text-accent-foreground"
-          )}
-          onClick={() => handleCtaClick('contact-section')}
-        >
-          Get a Quote
-        </Button>
-      </div>
     </div>
   );
 
