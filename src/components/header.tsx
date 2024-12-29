@@ -48,15 +48,34 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-primary text-primary-foreground backdrop-blur supports-[backdrop-filter]:bg-primary/80">
-      <div className="w-full px-4">
-        <nav className="flex h-16 items-center justify-between max-w-screen-2xl mx-auto">
+    <header 
+      className={cn(
+        // Base styles
+        "sticky top-0 z-50 w-full",
+        "border-b border-primary/10",
+        "bg-primary/95 text-primary-foreground",
+        // Backdrop blur with fallback
+        "backdrop-blur-md",
+        "supports-[backdrop-filter]:bg-primary/80"
+      )}
+    >
+      <div className="container px-4 mx-auto">
+        <nav 
+          className={cn(
+            "flex items-center justify-between",
+            "h-16 md:h-20",
+            "gap-4"
+          )}
+        >
           {/* Logo */}
           <Link 
             href="/" 
             className={cn(
-              "flex items-center transition-opacity hover:opacity-90",
-              "focus-visible:outline-none focus-visible:ring-2 focus:ring-ring",
+              "flex items-center shrink-0",
+              "transition-opacity duration-200",
+              "hover:opacity-90",
+              "focus-visible:outline-none focus-visible:ring-2",
+              "focus-visible:ring-ring focus-visible:ring-offset-2",
               "rounded-md"
             )}
           >
@@ -65,81 +84,173 @@ export function Header() {
               alt="Same Day Ramps logo"
               width={48}
               height={48}
-              className="h-10 w-auto"
+              className={cn(
+                "h-8 w-auto sm:h-10",
+                "transition-transform duration-200",
+                "hover:scale-105"
+              )}
               priority
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden landscape:flex items-center gap-8">
+          <div 
+            className={cn(
+              "hidden md:flex items-center",
+              "gap-1 lg:gap-2"
+            )}
+          >
             <button 
               onClick={() => handleNavClick('features-section')}
-              className="text-sm font-medium hover:text-primary-foreground/80 transition-colors"
+              className={cn(
+                "px-3 py-2 rounded-md",
+                "text-sm font-medium",
+                "transition-colors duration-200",
+                "hover:bg-primary-foreground/10",
+                "focus-visible:outline-none focus-visible:ring-2",
+                "focus-visible:ring-ring focus-visible:ring-offset-2"
+              )}
             >
               Features
             </button>
             <button 
               onClick={() => handleNavClick('faq-section')}
-              className="text-sm font-medium hover:text-primary-foreground/80 transition-colors"
+              className={cn(
+                "px-3 py-2 rounded-md",
+                "text-sm font-medium",
+                "transition-colors duration-200",
+                "hover:bg-primary-foreground/10",
+                "focus-visible:outline-none focus-visible:ring-2",
+                "focus-visible:ring-ring focus-visible:ring-offset-2"
+              )}
             >
               FAQ
             </button>
             <Link 
               href="/resources"
-              className="text-sm font-medium hover:text-primary-foreground/80 transition-colors"
+              className={cn(
+                "px-3 py-2 rounded-md",
+                "text-sm font-medium",
+                "transition-colors duration-200",
+                "hover:bg-primary-foreground/10",
+                "focus-visible:outline-none focus-visible:ring-2",
+                "focus-visible:ring-ring focus-visible:ring-offset-2"
+              )}
             >
               Resources
             </Link>
           </div>
 
           {/* Desktop Actions */}
-          <div className="hidden landscape:flex items-center">
+          <div className="hidden md:flex items-center">
             <Button 
               onClick={handleGetQuote}
               variant="secondary"
-              className="font-semibold text-base px-4 h-10 whitespace-nowrap bg-[#FFFF4D] hover:bg-[#FFFF4D]/90 text-black"
+              className={cn(
+                "font-semibold text-base",
+                "px-4 h-10 md:h-11",
+                "whitespace-nowrap",
+                "bg-accent hover:bg-accent/90",
+                "text-accent-foreground",
+                "shadow-sm",
+                "transition-all duration-200",
+                "hover:shadow-md hover:scale-105",
+                "active:scale-100"
+              )}
             >
               Get a Quote
             </Button>
           </div>
 
           {/* Mobile Menu */}
-          <div className="landscape:hidden">
+          <div className="md:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-10 w-10">
-                  <Menu className="h-5 w-5" />
+                <Button 
+                  variant="ghost" 
+                  className={cn(
+                    "!h-14 !w-14",
+                    "hover:bg-primary-foreground/10",
+                    "focus-visible:outline-none focus-visible:ring-2",
+                    "focus-visible:ring-ring focus-visible:ring-offset-2",
+                    "active:scale-95",
+                    "transition-all duration-200",
+                    "[&_svg]:!h-8 [&_svg]:!w-8"
+                  )}
+                >
+                  <Menu strokeWidth={2} />
+                  <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px] p-0">
-                <SheetHeader className="p-6 border-b">
+              <SheetContent 
+                side="right" 
+                className={cn(
+                  "w-full sm:max-w-sm",
+                  "p-0",
+                  "border-l border-primary/10"
+                )}
+              >
+                <SheetHeader className="p-6 border-b border-primary/10">
                   <SheetTitle className="text-left">Menu</SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col p-6 space-y-6">
-                  <div className="space-y-3">
+                  <div className="space-y-1.5">
                     <button 
                       onClick={() => handleNavClick('features-section')}
-                      className="block w-full text-left text-lg font-medium hover:text-primary"
+                      className={cn(
+                        "flex w-full items-center",
+                        "px-4 py-3 rounded-md",
+                        "text-lg font-medium",
+                        "transition-colors duration-200",
+                        "hover:bg-primary/10",
+                        "focus-visible:outline-none focus-visible:ring-2",
+                        "focus-visible:ring-ring"
+                      )}
                     >
                       Features
                     </button>
                     <button 
                       onClick={() => handleNavClick('faq-section')}
-                      className="block w-full text-left text-lg font-medium hover:text-primary"
+                      className={cn(
+                        "flex w-full items-center",
+                        "px-4 py-3 rounded-md",
+                        "text-lg font-medium",
+                        "transition-colors duration-200",
+                        "hover:bg-primary/10",
+                        "focus-visible:outline-none focus-visible:ring-2",
+                        "focus-visible:ring-ring"
+                      )}
                     >
                       FAQ
                     </button>
                     <Link 
                       href="/resources"
-                      className="block w-full text-left text-lg font-medium hover:text-primary"
                       onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "flex w-full items-center",
+                        "px-4 py-3 rounded-md",
+                        "text-lg font-medium",
+                        "transition-colors duration-200",
+                        "hover:bg-primary/10",
+                        "focus-visible:outline-none focus-visible:ring-2",
+                        "focus-visible:ring-ring"
+                      )}
                     >
                       Resources
                     </Link>
                   </div>
                   <Button 
                     onClick={handleGetQuote}
-                    className="w-full h-11 text-base font-medium bg-[#FFFF4D] hover:bg-[#FFFF4D]/90 text-black"
+                    className={cn(
+                      "w-full h-14",
+                      "text-lg font-semibold",
+                      "bg-accent hover:bg-accent/90",
+                      "text-accent-foreground",
+                      "shadow-sm",
+                      "transition-all duration-200",
+                      "hover:shadow-md",
+                      "active:scale-95"
+                    )}
                   >
                     Get a Quote
                   </Button>
