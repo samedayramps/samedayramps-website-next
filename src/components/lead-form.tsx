@@ -262,43 +262,43 @@ export function ExternalLeadForm({
         <div className="rounded-xl bg-card shadow-lg border border-border/40">
           <div className={cn(
             "flex flex-col",
-            "p-3 landscape:p-3 md:p-6",
-            "gap-3 landscape:gap-3 md:gap-6"
+            "p-2 landscape:p-2 md:p-4",
+            "gap-2 landscape:gap-2 md:gap-4"
           )}>
             {/* Form Status Alerts */}
             {submissionStatus === 'success' && (
-              <Alert className="bg-green-500/10 text-green-500 border-green-500/20 py-1.5">
-                <CheckCircle2 className="w-[min(1.25rem,4vw)] h-[min(1.25rem,4vw)]" />
-                <AlertTitle className="text-[min(1rem,4vw)] sm:text-base md:text-lg">Success!</AlertTitle>
-                <AlertDescription className="text-[min(0.875rem,3.5vw)] sm:text-sm md:text-base">
+              <Alert className="bg-green-500/10 text-green-500 border-green-500/20 py-1">
+                <CheckCircle2 className="w-[min(1rem,4vw)] h-[min(1rem,4vw)]" />
+                <AlertTitle className="text-[min(0.875rem,3.5vw)] sm:text-sm md:text-base">Success!</AlertTitle>
+                <AlertDescription className="text-[min(0.75rem,3vw)] sm:text-xs md:text-sm">
                   Your quote request has been submitted. We&apos;ll be in touch shortly!
                 </AlertDescription>
               </Alert>
             )}
             
             {errorMessage && (
-              <Alert variant="destructive" className="py-1.5">
-                <AlertCircle className="w-[min(1.25rem,4vw)] h-[min(1.25rem,4vw)]" />
-                <AlertTitle className="text-[min(1rem,4vw)] sm:text-base md:text-lg">Error</AlertTitle>
-                <AlertDescription className="text-[min(0.875rem,3.5vw)] sm:text-sm md:text-base">{errorMessage}</AlertDescription>
+              <Alert variant="destructive" className="py-1">
+                <AlertCircle className="w-[min(1rem,4vw)] h-[min(1rem,4vw)]" />
+                <AlertTitle className="text-[min(0.875rem,3.5vw)] sm:text-sm md:text-base">Error</AlertTitle>
+                <AlertDescription className="text-[min(0.75rem,3vw)] sm:text-xs md:text-sm">{errorMessage}</AlertDescription>
               </Alert>
             )}
 
             {/* Main Form Grid */}
-            <div className="flex flex-col gap-3 landscape:gap-3 md:gap-6">
+            <div className="flex flex-col gap-2 landscape:gap-2 md:gap-4">
               {/* Contact Info */}
-              <div className="flex flex-col gap-3 landscape:gap-3 md:gap-6">
+              <div className="flex flex-col gap-2 landscape:gap-2 md:gap-4">
                 {/* Section Title */}
                 <div className="flex items-center gap-2">
                   <h3 className={cn(
                     "font-medium text-muted-foreground",
-                    "text-sm landscape:text-sm md:text-lg"
+                    "text-[min(0.875rem,3vw)] landscape:text-xs md:text-base"
                   )}>Contact Info</h3>
                   <div className="flex-1 h-px bg-border/40" />
                 </div>
                 
-                {/* Name Fields */}
-                <div className="grid grid-cols-2 gap-2 landscape:gap-1.5 md:gap-3">
+                {/* Form Fields */}
+                <div className="grid grid-cols-2 gap-1.5 landscape:gap-1.5 md:gap-2">
                   <FormField
                     control={form.control}
                     name="customer.first_name"
@@ -310,9 +310,9 @@ export function ExternalLeadForm({
                               {...field} 
                               className={cn(
                                 "bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60",
-                                "h-[min(2.25rem,8vh)] md:h-11",
-                                "pl-[2.25rem] md:pl-11",
-                                "text-[min(1rem,3.5vw)] sm:text-base"
+                                "h-[min(2rem,7vh)] md:h-10",
+                                "pl-[2rem] md:pl-10",
+                                "text-[min(0.875rem,3vw)] sm:text-sm md:text-base"
                               )}
                               placeholder="First Name"
                             />
@@ -338,9 +338,9 @@ export function ExternalLeadForm({
                               {...field} 
                               className={cn(
                                 "bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60",
-                                "h-[min(2.25rem,8vh)] md:h-11",
-                                "pl-[2.25rem] md:pl-11",
-                                "text-[min(1rem,3.5vw)] sm:text-base"
+                                "h-[min(2rem,7vh)] md:h-10",
+                                "pl-[2rem] md:pl-10",
+                                "text-[min(0.875rem,3vw)] sm:text-sm md:text-base"
                               )}
                               placeholder="Last Name"
                             />
@@ -355,10 +355,6 @@ export function ExternalLeadForm({
                       </FormItem>
                     )}
                   />
-                </div>
-
-                {/* Contact Fields */}
-                <div className="grid grid-cols-2 gap-2 landscape:gap-1.5 md:gap-3">
                   <FormField
                     control={form.control}
                     name="customer.email"
@@ -371,9 +367,9 @@ export function ExternalLeadForm({
                               type="email"
                               className={cn(
                                 "bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60",
-                                "h-[min(2.25rem,8vh)] md:h-11",
-                                "pl-[2.25rem] md:pl-11",
-                                "text-[min(1rem,3.5vw)] sm:text-base"
+                                "h-[min(2rem,7vh)] md:h-10",
+                                "pl-[2rem] md:pl-10",
+                                "text-[min(0.875rem,3vw)] sm:text-sm md:text-base"
                               )}
                               placeholder="Email"
                               value={field.value}
@@ -401,9 +397,9 @@ export function ExternalLeadForm({
                               type="tel"
                               className={cn(
                                 "bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60",
-                                "h-[min(2.25rem,8vh)] md:h-11",
-                                "pl-[2.25rem] md:pl-11",
-                                "text-[min(1rem,3.5vw)] sm:text-base"
+                                "h-[min(2rem,7vh)] md:h-10",
+                                "pl-[2rem] md:pl-10",
+                                "text-[min(0.875rem,3vw)] sm:text-sm md:text-base"
                               )}
                               placeholder="Phone"
                               value={field.value}
@@ -419,51 +415,49 @@ export function ExternalLeadForm({
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name="customer.address.formatted_address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="relative group">
+                            <Input
+                              {...field}
+                              ref={inputRef}
+                              type="text"
+                              className={cn(
+                                "bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60",
+                                "h-[min(2rem,7vh)] md:h-10",
+                                "pl-[2rem] md:pl-10",
+                                "text-[min(0.875rem,3vw)] sm:text-sm md:text-base"
+                              )}
+                              placeholder="Installation Address"
+                              disabled={!isGoogleMapsLoaded}
+                              autoComplete="off"
+                              value={field.value || ''}
+                            />
+                            <MapPin className={cn(
+                              "absolute left-[0.625rem] md:left-3.5 top-1/2 -translate-y-1/2",
+                              "w-[min(1rem,3.5vw)] h-[min(1rem,3.5vw)] md:h-5 md:w-5",
+                              "text-muted-foreground/50"
+                            )} />
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-[min(0.75rem,3vw)] sm:text-xs md:text-sm mt-[0.125rem] md:mt-1" />
+                      </FormItem>
+                    )}
+                  />
                 </div>
-
-                {/* Address Field */}
-                <FormField
-                  control={form.control}
-                  name="customer.address.formatted_address"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <div className="relative group">
-                          <Input
-                            {...field}
-                            ref={inputRef}
-                            type="text"
-                            className={cn(
-                              "bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60",
-                              "h-[min(2.25rem,8vh)] md:h-11",
-                              "pl-[2.25rem] md:pl-11",
-                              "text-[min(1rem,3.5vw)] sm:text-base"
-                            )}
-                            placeholder="Installation Address"
-                            disabled={!isGoogleMapsLoaded}
-                            autoComplete="off"
-                            value={field.value || ''}
-                          />
-                          <MapPin className={cn(
-                            "absolute left-[0.625rem] md:left-3.5 top-1/2 -translate-y-1/2",
-                            "w-[min(1rem,3.5vw)] h-[min(1rem,3.5vw)] md:h-5 md:w-5",
-                            "text-muted-foreground/50"
-                          )} />
-                        </div>
-                      </FormControl>
-                      <FormMessage className="text-[min(0.75rem,3vw)] sm:text-xs md:text-sm mt-[0.125rem] md:mt-1" />
-                    </FormItem>
-                  )}
-                />
               </div>
 
               {/* Timeline and Notes */}
-              <div className="flex flex-col gap-3 landscape:gap-3 md:gap-6">
-                {/* Timeline Field */}
+              <div className="flex flex-col gap-2 landscape:gap-2 md:gap-4">
+                {/* Section Title */}
                 <div className="flex items-center gap-2">
                   <h3 className={cn(
                     "font-medium text-muted-foreground",
-                    "text-sm landscape:text-sm md:text-lg"
+                    "text-[min(0.875rem,3vw)] landscape:text-xs md:text-base"
                   )}>When do you need it?</h3>
                   <div className="flex-1 h-px bg-border/40" />
                 </div>
@@ -480,8 +474,8 @@ export function ExternalLeadForm({
                         >
                           <SelectTrigger className={cn(
                             "bg-background/50 hover:bg-background/80 focus:bg-background transition-colors border-border/60",
-                            "h-[min(2.25rem,8vh)] md:h-11",
-                            "text-[min(1rem,3.5vw)] sm:text-base",
+                            "h-[min(2rem,7vh)] md:h-10",
+                            "text-[min(0.875rem,3vw)] sm:text-sm md:text-base",
                             "[&>*]:text-muted-foreground/80",
                             "data-[value]:text-foreground"
                           )}>
@@ -492,7 +486,7 @@ export function ExternalLeadForm({
                               <SelectItem
                                 key={option.value}
                                 value={option.value}
-                                className="text-[min(1rem,3.5vw)] sm:text-base"
+                                className="text-[min(0.875rem,3vw)] sm:text-sm md:text-base"
                               >
                                 {option.label}
                               </SelectItem>
@@ -505,7 +499,6 @@ export function ExternalLeadForm({
                   )}
                 />
 
-                {/* Notes Field */}
                 <FormField
                   control={form.control}
                   name="notes"
@@ -517,9 +510,9 @@ export function ExternalLeadForm({
                             {...field}
                             className={cn(
                               "bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60",
-                              "h-[min(2.25rem,8vh)] md:h-11",
-                              "pl-[2.25rem] md:pl-11",
-                              "text-[min(1rem,3.5vw)] sm:text-base"
+                              "h-[min(2rem,7vh)] md:h-10",
+                              "pl-[2rem] md:pl-10",
+                              "text-[min(0.875rem,3vw)] sm:text-sm md:text-base"
                             )}
                             placeholder="Additional Notes (optional)"
                             value={typeof field.value === 'string' ? field.value : ''}
@@ -545,18 +538,18 @@ export function ExternalLeadForm({
               disabled={submissionStatus === 'submitting'}
               className={cn(
                 "w-full font-medium rounded-lg",
-                "h-9 landscape:h-9 md:h-11",
-                "text-sm landscape:text-sm md:text-base",
+                "h-8 landscape:h-8 md:h-10",
+                "text-[min(0.875rem,3vw)] landscape:text-xs md:text-sm",
                 "bg-accent hover:bg-accent/90",
                 "text-accent-foreground",
                 "shadow-sm hover:shadow-md",
                 "transition-all duration-200",
-                "mt-3 landscape:mt-3 md:mt-6"
+                "mt-2 landscape:mt-2 md:mt-4"
               )}
             >
               {submissionStatus === 'submitting' ? (
                 <div className="flex items-center justify-center gap-2">
-                  <span className="w-[min(0.875rem,3vw)] h-[min(0.875rem,3vw)] md:h-4 md:w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  <span className="w-[min(0.75rem,2.5vw)] h-[min(0.75rem,2.5vw)] md:h-3.5 md:w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
                   <span>Submitting...</span>
                 </div>
               ) : (

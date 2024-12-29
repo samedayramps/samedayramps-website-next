@@ -23,18 +23,12 @@ export function ContactSection({
 }: ContactSectionProps) {
   return (
     <Section id="contact-section" className={cn(
-      "relative min-h-[calc(100dvh-64px)] bg-background",
-      "flex items-center",
-      "snap-start snap-always",
-      "touch-manipulation",
-      "overflow-y-auto",
-      "overscroll-none",
-      "-webkit-overflow-scrolling-touch",
+      "relative bg-background",
       className
     )}>
-      <Container className="min-h-full py-6 landscape:py-4">
+      <Container className="h-full">
         <div className={cn(
-          "min-h-full w-full",
+          "h-full w-full",
           "grid grid-cols-1 landscape:grid-cols-[1fr,2fr]",
           "gap-6 landscape:gap-8 xl:gap-12",
           "px-3 landscape:px-6 xl:px-8",
