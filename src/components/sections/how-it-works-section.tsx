@@ -104,7 +104,8 @@ export function HowItWorksSection({
         "relative w-full",
         "max-w-[min(95vw,560px)]",
         "landscape:w-[50vh] landscape:h-[50vh]",
-        "aspect-[4/3] landscape:aspect-square",
+        "h-[min(30vh,400px)]",
+        "landscape:aspect-square",
         "rounded-2xl overflow-hidden",
         "bg-gradient-to-br from-primary/5 to-primary/10"
       )}>
