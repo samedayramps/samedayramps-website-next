@@ -2,9 +2,9 @@ export const featuresConfig = {
   wheelchairRamps: {
     title: "When Renting Makes Sense",
     features: [
-      "Focus on recovering in the comfort of your own home, with the freedom to move in and out safely after surgery or injury",
-      "Not sure about long-term needs? Our month-to-month rentals give you time to evaluate without a big commitment",
-      "Need temporary access for an event or visiting family member? Get a ramp installed and removed on your schedule",
+      "Recover at home safely after surgery or injury, with easy access to come and go as you need",
+      "Take your time figuring out what's next - rent monthly with no long-term commitment",
+      "Hosting an event or family visit? We'll install a ramp when you need it and remove it when you're done",
     ],
     media: {
       src: "/ramp2.webp",
