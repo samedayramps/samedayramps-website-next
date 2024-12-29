@@ -2,30 +2,35 @@
 
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
-import { Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
-interface FeaturesContent {
+interface HowItWorksContent {
   title: string;
-  features: string[];
+  steps: string[];
   media: {
     src: string;
     alt: string;
   };
 }
 
-interface FeaturesSectionProps {
-  content: FeaturesContent;
+interface HowItWorksSectionProps {
+  content: HowItWorksContent;
   className?: string;
   theme?: "light" | "dark";
 }
 
-export function FeaturesSection({
+export function HowItWorksSection({
   content,
   className,
   theme = "light"
-}: FeaturesSectionProps) {
+}: HowItWorksSectionProps) {
+  const handleCtaClick = (href: string) => {
+    const targetSection = document.getElementById(href);
+    targetSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const contentSection = (
     <div className={cn(
       "flex flex-col justify-center",
@@ -45,22 +50,47 @@ export function FeaturesSection({
         {content.title}
       </h2>
 
-      {/* Features List */}
-      <ul className="space-y-3 landscape:space-y-2 text-left max-w-2xl mx-auto landscape:mx-0">
-        {content.features.map((feature, index) => (
-          <li key={index} className="flex items-start gap-3 landscape:gap-2">
-            <Check className="h-5 w-5 landscape:h-4 landscape:w-4 text-primary shrink-0 mt-1" />
+      {/* Steps List */}
+      <ul className="space-y-4 landscape:space-y-3 text-left max-w-2xl mx-auto landscape:mx-0">
+        {content.steps.map((step, index) => (
+          <li key={index} className="flex items-center gap-4 landscape:gap-3">
+            <div className={cn(
+              "flex items-center justify-center",
+              "w-8 h-8 landscape:w-7 landscape:h-7",
+              "rounded-full bg-primary text-primary-foreground",
+              "text-lg landscape:text-base font-semibold",
+              "shrink-0"
+            )}>
+              {index + 1}
+            </div>
             <span className={cn(
               "text-[clamp(1rem,2vw,1.25rem)]",
               "landscape:text-[clamp(0.875rem,1.5vw,1rem)]",
               "leading-tight",
               theme === "dark" ? "text-white/70" : "text-muted-foreground"
             )}>
-              {feature}
+              {step}
             </span>
           </li>
         ))}
       </ul>
+
+      {/* CTA Button */}
+      <div className="flex justify-center landscape:justify-start mt-2">
+        <Button 
+          variant="secondary"
+          className={cn(
+            "h-10 px-4",
+            "font-semibold text-base",
+            "whitespace-nowrap",
+            "w-full sm:w-auto",
+            "bg-accent hover:bg-accent/90 text-accent-foreground"
+          )}
+          onClick={() => handleCtaClick('contact-section')}
+        >
+          Get a Quote
+        </Button>
+      </div>
     </div>
   );
 
@@ -68,7 +98,7 @@ export function FeaturesSection({
     <div className={cn(
       "relative w-full h-full",
       "flex items-center justify-center",
-      "landscape:justify-start landscape:pl-0"
+      "landscape:justify-end landscape:pr-0"
     )}>
       <div className={cn(
         "relative w-full",
@@ -94,7 +124,7 @@ export function FeaturesSection({
   );
 
   return (
-    <Section id="features-section" className={cn(
+    <Section id="how-it-works-section" className={cn(
       "relative h-[calc(100dvh-64px)] bg-background",
       "flex items-center",
       "snap-start snap-always",
@@ -108,13 +138,13 @@ export function FeaturesSection({
         <div className={cn(
           "h-full w-full",
           "max-w-7xl mx-auto",
-          "grid grid-cols-1 landscape:grid-cols-[1fr_1.5fr]",
+          "grid grid-cols-1 landscape:grid-cols-[1.5fr_1fr]",
           "items-center gap-6 landscape:gap-3",
           "px-3 landscape:px-3 sm:px-6",
           "relative"
         )}>
-          <div className="order-2 landscape:order-1">{mediaSection}</div>
-          <div className="order-1 landscape:order-2">{contentSection}</div>
+          <div className="order-1 landscape:order-1">{contentSection}</div>
+          <div className="order-2 landscape:order-2">{mediaSection}</div>
         </div>
       </Container>
     </Section>

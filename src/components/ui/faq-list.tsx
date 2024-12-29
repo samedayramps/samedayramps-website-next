@@ -213,7 +213,7 @@ export function FAQList({
                         answerClassName
                       )}
                     >
-                      <div className="space-y-2">
+                      <div className="space-y-2 text-left">
                         <p className="text-base landscape:text-base xl:text-lg text-muted-foreground">
                           {faq.answer}
                         </p>

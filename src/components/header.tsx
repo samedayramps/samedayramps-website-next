@@ -96,8 +96,8 @@ export function Header() {
           <div className="hidden landscape:flex items-center">
             <Button 
               onClick={handleGetQuote}
-              variant="default"
-              className="font-semibold text-base px-4 h-10 whitespace-nowrap"
+              variant="secondary"
+              className="font-semibold text-base px-4 h-10 whitespace-nowrap bg-[#FFFF4D] hover:bg-[#FFFF4D]/90 text-black"
             >
               Get a Quote
             </Button>
@@ -139,7 +139,7 @@ export function Header() {
                   </div>
                   <Button 
                     onClick={handleGetQuote}
-                    className="w-full h-11 text-base font-medium"
+                    className="w-full h-11 text-base font-medium bg-[#FFFF4D] hover:bg-[#FFFF4D]/90 text-black"
                   >
                     Get a Quote
                   </Button>

@@ -3,56 +3,216 @@
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { VideoPlayer } from "@/components/ui/video-player";
-import { HOME_PAGE } from "@/constants/content";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { Check } from "lucide-react";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
 
-export function HeroSection() {
-  const handleQuoteClick = () => {
-    const contactSection = document.getElementById('contact-section');
-    contactSection?.scrollIntoView({ behavior: 'smooth' });
+interface HeroContent {
+  title: {
+    main: string;
+    highlight?: string;
+    conjunction?: string;
+    highlight2?: string;
+    suffix?: string;
+  };
+  subtitle: string;
+  bulletPoints: string[];
+  cta: {
+    primary: {
+      text: string;
+      href: string;
+    };
+    secondary: {
+      text: string;
+      href: string;
+    };
+  };
+  media: {
+    type: "video" | "image";
+    src: string;
+    title?: string;
+    alt?: string;
+  };
+}
+
+interface HeroSectionProps {
+  content: HeroContent;
+  className?: string;
+  layout?: "default" | "reverse";
+  theme?: "light" | "dark";
+}
+
+export function HeroSection({ 
+  content,
+  className,
+  layout = "default",
+  theme = "light",
+}: HeroSectionProps) {
+  const handleCtaClick = (href: string) => {
+    const targetSection = document.getElementById(href);
+    targetSection?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const contentSection = (
+    <div className={cn(
+      "flex flex-col justify-center",
+      "w-full h-full",
+      "mx-auto landscape:mx-0",
+      "text-center landscape:text-left",
+      "gap-3 landscape:gap-3",
+      theme === "dark" ? "text-white" : "text-foreground"
+    )}>
+      {/* Subtitle */}
+      <p className={cn(
+        "text-[clamp(1rem,2.5vw,1.5rem)]",
+        "landscape:text-[clamp(0.875rem,1.75vw,1.125rem)]",
+        "max-w-[95%] mx-auto landscape:mx-0",
+        theme === "dark" ? "text-white/80" : "text-muted-foreground"
+      )}>
+        {content.subtitle}
+      </p>
+
+      {/* Title */}
+      <div className="space-y-0.5">
+        <h1 className={cn(
+          "text-[clamp(1.75rem,6vw,3.5rem)]",
+          "landscape:text-[clamp(1.75rem,3.5vw,2.75rem)]",
+          "font-bold tracking-tight leading-[1.1]",
+          "bg-clip-text"
+        )}>
+          {content.title.main}
+          {content.title.highlight && (
+            <span className="text-primary">{content.title.highlight}</span>
+          )}
+          {content.title.conjunction && (
+            <span>{content.title.conjunction}</span>
+          )}
+          {content.title.highlight2 && (
+            <span className="text-primary">{content.title.highlight2}</span>
+          )}
+          {content.title.suffix && (
+            <span className="block">{content.title.suffix}</span>
+          )}
+        </h1>
+      </div>
+
+      {/* Bullet Points */}
+      <ul className="space-y-2 landscape:space-y-1.5 text-left max-w-2xl mx-auto landscape:mx-0">
+        {content.bulletPoints.map((point, index) => (
+          <li key={index} className="flex items-start gap-2 landscape:gap-2">
+            <Check className="h-4 w-4 landscape:h-4 landscape:w-4 text-primary shrink-0 mt-1" />
+            <span className={cn(
+              "text-[clamp(0.875rem,2vw,1.25rem)]",
+              "landscape:text-[clamp(0.875rem,1.5vw,1rem)]",
+              "leading-tight",
+              theme === "dark" ? "text-white/70" : "text-muted-foreground"
+            )}>
+              {point}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      {/* CTA Buttons */}
+      <div className="flex flex-col sm:flex-row landscape:flex-row items-stretch sm:items-center gap-2 landscape:gap-2 justify-center landscape:justify-start mt-1">
+        <Button 
+          variant="secondary"
+          className={cn(
+            "h-10 px-4",
+            "font-semibold text-base",
+            "whitespace-nowrap",
+            "w-full sm:w-auto",
+            "bg-accent hover:bg-accent/90 text-accent-foreground"
+          )}
+          onClick={() => handleCtaClick(content.cta.primary.href)}
+        >
+          {content.cta.primary.text}
+        </Button>
+        <Button 
+          variant="outline"
+          className={cn(
+            "h-10 px-4",
+            "text-base font-semibold",
+            "whitespace-nowrap",
+            "w-full sm:w-auto",
+            "border"
+          )}
+          onClick={() => handleCtaClick(content.cta.secondary.href)}
+        >
+          {content.cta.secondary.text}
+        </Button>
+      </div>
+    </div>
+  );
+
+  const mediaSection = (
+    <div className={cn(
+      "relative w-full h-full",
+      "flex items-center justify-center",
+      "landscape:justify-end landscape:pr-0"
+    )}>
+      <div className={cn(
+        "relative w-full",
+        "max-w-[min(95vw,560px)]",
+        "landscape:w-[50vh] landscape:h-[50vh]",
+        "aspect-[4/3] landscape:aspect-square",
+        "rounded-2xl overflow-hidden",
+        "bg-gradient-to-br from-primary/5 to-primary/10"
+      )}>
+        {content.media.type === "video" ? (
+          <VideoPlayer 
+            src={content.media.src}
+            title={content.media.title || ""}
+          />
+        ) : (
+          <Image 
+            src={content.media.src}
+            alt={content.media.alt || ""}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 95vw, (max-width: 1200px) 50vh, 560px"
+            priority
+          />
+        )}
+        {/* Decorative Elements */}
+        <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
+        <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
+      </div>
+    </div>
+  );
+
   return (
-    <Section>
-      <Container className="py-8">
-        <div className="max-w-[90rem] w-full mx-auto">
-          <div className="grid portrait:grid-rows-[auto,1fr] landscape:grid-cols-2 items-center gap-6 landscape:gap-12 xl:gap-16">
-            {/* Video Player */}
-            <div className="relative flex items-center portrait:order-first landscape:order-last">
-              <div className="w-full max-w-[min(600px,65vh)] mx-auto landscape:ml-auto landscape:mr-0">
-                <VideoPlayer 
-                  src={HOME_PAGE.hero.videoUrl}
-                  title={HOME_PAGE.hero.videoTitle}
-                />
-              </div>
-            </div>
-
-            {/* Text Content */}
-            <div className="text-center landscape:text-left space-y-4 landscape:max-w-2xl portrait:order-last landscape:order-first">
-              <div className="space-y-3">
-                <h1 className="text-xl sm:text-2xl landscape:text-2xl xl:text-5xl 2xl:text-6xl font-bold">
-                  Wheelchair Ramp<br />
-                  Rentals
-                </h1>
-                <p className="text-base landscape:text-base xl:text-xl text-muted-foreground">
-                  {HOME_PAGE.hero.subtitle}
-                </p>
-              </div>
-
-              {/* CTA Button */}
-              <div>
-                <Button 
-                  size="lg" 
-                  className="h-11 px-7 text-base landscape:h-12 landscape:px-8 landscape:text-base xl:text-lg rounded-full"
-                  onClick={handleQuoteClick}
-                >
-                  Get Your Quote
-                  <ArrowRight className="ml-2 h-4 w-4 landscape:h-4 landscape:w-4 xl:h-5 xl:w-5" />
-                </Button>
-              </div>
-            </div>
-          </div>
+    <Section className={cn(
+      "relative h-[calc(100dvh-64px)] bg-background",
+      "flex items-center",
+      "snap-start snap-always",
+      "touch-manipulation",
+      "overflow-hidden",
+      "overscroll-none",
+      "-webkit-overflow-scrolling-touch",
+      className
+    )}>
+      <Container className="h-full py-4 landscape:py-2">
+        <div className={cn(
+          "h-full w-full",
+          "max-w-7xl mx-auto",
+          "grid grid-cols-1 landscape:grid-cols-[1.5fr_1fr]",
+          "items-center gap-6 landscape:gap-3",
+          "px-3 landscape:px-3 sm:px-6",
+          "relative"
+        )}>
+          {layout === "default" ? (
+            <>
+              <div className="order-1 landscape:order-1">{contentSection}</div>
+              <div className="order-2 landscape:order-2">{mediaSection}</div>
+            </>
+          ) : (
+            <>
+              <div className="order-2 landscape:order-1">{mediaSection}</div>
+              <div className="order-1 landscape:order-2">{contentSection}</div>
+            </>
+          )}
         </div>
       </Container>
     </Section>

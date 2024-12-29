@@ -252,47 +252,48 @@ export function ExternalLeadForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-lg mx-auto landscape:max-w-3xl">
-        <div className="rounded-xl bg-card shadow-lg border border-border/40 overflow-hidden">
-          <div className="p-4 space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+        <div className="rounded-xl bg-card shadow-lg border border-border/40">
+          <div className={cn(
+            "flex flex-col",
+            // Consistent padding on all sides
+            "p-[min(4vw,1.5rem)] sm:p-[min(3vw,1.75rem)] md:p-6"
+          )}>
             {/* Form Status Alerts */}
             {submissionStatus === 'success' && (
-              <Alert className="bg-green-500/10 text-green-500 border-green-500/20">
-                <CheckCircle2 className="h-4 w-4" />
-                <AlertTitle>Success!</AlertTitle>
-                <AlertDescription>
+              <Alert className="bg-green-500/10 text-green-500 border-green-500/20 py-[min(1.5vh,0.75rem)] mb-[min(3vh,1.25rem)]">
+                <CheckCircle2 className="w-[min(1.25rem,4vw)] h-[min(1.25rem,4vw)]" />
+                <AlertTitle className="text-[min(1rem,4vw)] sm:text-base md:text-lg">Success!</AlertTitle>
+                <AlertDescription className="text-[min(0.875rem,3.5vw)] sm:text-sm md:text-base">
                   Your quote request has been submitted. We&apos;ll be in touch shortly!
                 </AlertDescription>
               </Alert>
             )}
             
             {errorMessage && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{errorMessage}</AlertDescription>
+              <Alert variant="destructive" className="py-[min(1.5vh,0.75rem)] mb-[min(3vh,1.25rem)]">
+                <AlertCircle className="w-[min(1.25rem,4vw)] h-[min(1.25rem,4vw)]" />
+                <AlertTitle className="text-[min(1rem,4vw)] sm:text-base md:text-lg">Error</AlertTitle>
+                <AlertDescription className="text-[min(0.875rem,3.5vw)] sm:text-sm md:text-base">{errorMessage}</AlertDescription>
               </Alert>
             )}
 
-            {/* Main Title */}
-            <div className="text-center">
-              <h2 className="text-lg font-semibold text-foreground/90">
-                Request a Quote
-              </h2>
-            </div>
-
             {/* Main Form Grid */}
-            <div className="grid grid-cols-1 landscape:grid-cols-[1.2fr,1fr] gap-4">
-              {/* Left Column - Contact Info */}
-              <div className="space-y-3">
+            <div className="flex flex-col gap-[min(2vh,1rem)] landscape:gap-[min(1.5vh,0.75rem)]">
+              {/* Contact Info */}
+              <div className="flex flex-col gap-[min(2vh,1rem)] landscape:gap-[min(1.5vh,0.75rem)]">
                 {/* Section Title */}
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-medium text-muted-foreground">Contact Info</h3>
+                <div className="flex items-center gap-[0.5rem]">
+                  <h3 className={cn(
+                    "font-medium text-muted-foreground",
+                    "text-[min(1rem,4vw)]",
+                    "sm:text-base md:text-lg"
+                  )}>Contact Info</h3>
                   <div className="flex-1 h-px bg-border/40" />
                 </div>
                 
                 {/* Name Fields */}
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-[min(0.5rem,2vw)] sm:gap-3">
                   <FormField
                     control={form.control}
                     name="customer.first_name"
@@ -302,13 +303,22 @@ export function ExternalLeadForm({
                           <div className="relative group">
                             <Input 
                               {...field} 
-                              className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
+                              className={cn(
+                                "bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60",
+                                "h-[min(2.25rem,8vh)] md:h-11",
+                                "pl-[2.25rem] md:pl-11",
+                                "text-[min(1rem,3.5vw)] sm:text-base"
+                              )}
                               placeholder="First Name"
                             />
-                            <User2 className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
+                            <User2 className={cn(
+                              "absolute left-[0.625rem] md:left-3.5 top-1/2 -translate-y-1/2",
+                              "w-[min(1rem,3.5vw)] h-[min(1rem,3.5vw)] md:h-5 md:w-5",
+                              "text-muted-foreground/50"
+                            )} />
                           </div>
                         </FormControl>
-                        <FormMessage className="text-xs mt-1" />
+                        <FormMessage className="text-[min(0.75rem,3vw)] sm:text-xs md:text-sm mt-[0.125rem] md:mt-1" />
                       </FormItem>
                     )}
                   />
@@ -321,20 +331,29 @@ export function ExternalLeadForm({
                           <div className="relative group">
                             <Input 
                               {...field} 
-                              className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
+                              className={cn(
+                                "bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60",
+                                "h-[min(2.25rem,8vh)] md:h-11",
+                                "pl-[2.25rem] md:pl-11",
+                                "text-[min(1rem,3.5vw)] sm:text-base"
+                              )}
                               placeholder="Last Name"
                             />
-                            <User2 className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
+                            <User2 className={cn(
+                              "absolute left-[0.625rem] md:left-3.5 top-1/2 -translate-y-1/2",
+                              "w-[min(1rem,3.5vw)] h-[min(1rem,3.5vw)] md:h-5 md:w-5",
+                              "text-muted-foreground/50"
+                            )} />
                           </div>
                         </FormControl>
-                        <FormMessage className="text-xs mt-1" />
+                        <FormMessage className="text-[min(0.75rem,3vw)] sm:text-xs md:text-sm mt-[0.125rem] md:mt-1" />
                       </FormItem>
                     )}
                   />
                 </div>
 
                 {/* Contact Fields */}
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-[min(0.5rem,2vw)] sm:gap-3">
                   <FormField
                     control={form.control}
                     name="customer.email"
@@ -345,14 +364,23 @@ export function ExternalLeadForm({
                             <Input 
                               {...field}
                               type="email"
-                              className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
+                              className={cn(
+                                "bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60",
+                                "h-[min(2.25rem,8vh)] md:h-11",
+                                "pl-[2.25rem] md:pl-11",
+                                "text-[min(1rem,3.5vw)] sm:text-base"
+                              )}
                               placeholder="Email"
                               value={field.value}
                             />
-                            <Mail className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
+                            <Mail className={cn(
+                              "absolute left-[0.625rem] md:left-3.5 top-1/2 -translate-y-1/2",
+                              "w-[min(1rem,3.5vw)] h-[min(1rem,3.5vw)] md:h-5 md:w-5",
+                              "text-muted-foreground/50"
+                            )} />
                           </div>
                         </FormControl>
-                        <FormMessage className="text-xs mt-1" />
+                        <FormMessage className="text-[min(0.75rem,3vw)] sm:text-xs md:text-sm mt-[0.125rem] md:mt-1" />
                       </FormItem>
                     )}
                   />
@@ -366,14 +394,23 @@ export function ExternalLeadForm({
                             <Input 
                               {...field}
                               type="tel"
-                              className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
+                              className={cn(
+                                "bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60",
+                                "h-[min(2.25rem,8vh)] md:h-11",
+                                "pl-[2.25rem] md:pl-11",
+                                "text-[min(1rem,3.5vw)] sm:text-base"
+                              )}
                               placeholder="Phone"
                               value={field.value}
                             />
-                            <Phone className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
+                            <Phone className={cn(
+                              "absolute left-[0.625rem] md:left-3.5 top-1/2 -translate-y-1/2",
+                              "w-[min(1rem,3.5vw)] h-[min(1rem,3.5vw)] md:h-5 md:w-5",
+                              "text-muted-foreground/50"
+                            )} />
                           </div>
                         </FormControl>
-                        <FormMessage className="text-xs mt-1" />
+                        <FormMessage className="text-[min(0.75rem,3vw)] sm:text-xs md:text-sm mt-[0.125rem] md:mt-1" />
                       </FormItem>
                     )}
                   />
@@ -391,26 +428,39 @@ export function ExternalLeadForm({
                             {...field}
                             ref={inputRef}
                             type="text"
-                            className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
+                            className={cn(
+                              "bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60",
+                              "h-[min(2.25rem,8vh)] md:h-11",
+                              "pl-[2.25rem] md:pl-11",
+                              "text-[min(1rem,3.5vw)] sm:text-base"
+                            )}
                             placeholder="Installation Address"
                             disabled={!isGoogleMapsLoaded}
                             autoComplete="off"
                             value={field.value || ''}
                           />
-                          <MapPin className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
+                          <MapPin className={cn(
+                            "absolute left-[0.625rem] md:left-3.5 top-1/2 -translate-y-1/2",
+                            "w-[min(1rem,3.5vw)] h-[min(1rem,3.5vw)] md:h-5 md:w-5",
+                            "text-muted-foreground/50"
+                          )} />
                         </div>
                       </FormControl>
-                      <FormMessage className="text-xs mt-1" />
+                      <FormMessage className="text-[min(0.75rem,3vw)] sm:text-xs md:text-sm mt-[0.125rem] md:mt-1" />
                     </FormItem>
                   )}
                 />
               </div>
 
-              {/* Right Column - Timeline and Notes */}
-              <div className="space-y-3">
+              {/* Timeline and Notes */}
+              <div className="flex flex-col gap-[min(2vh,1rem)] landscape:gap-[min(1.5vh,0.75rem)]">
                 {/* Timeline Field */}
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-medium text-muted-foreground">When do you need it?</h3>
+                <div className="flex items-center gap-[0.5rem]">
+                  <h3 className={cn(
+                    "font-medium text-muted-foreground",
+                    "text-[min(1rem,4vw)]",
+                    "sm:text-base md:text-lg"
+                  )}>When do you need it?</h3>
                   <div className="flex-1 h-px bg-border/40" />
                 </div>
 
@@ -418,22 +468,23 @@ export function ExternalLeadForm({
                   control={form.control}
                   name="timeline"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
+                    <FormItem className="space-y-[min(1vh,0.5rem)]">
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}
                           defaultValue={field.value || undefined}
-                          className="grid grid-cols-2 gap-2"
+                          className="grid grid-cols-2 gap-[min(0.5rem,2vw)] sm:gap-3"
                         >
                           {HOME_PAGE.form.timeline.options.map((option) => (
                             <FormItem key={option.value}>
                               <FormControl>
                                 <label
                                   className={cn(
-                                    "flex items-center justify-center w-full h-10",
+                                    "flex items-center justify-center w-full",
+                                    "h-[min(2.25rem,8vh)] md:h-11",
                                     "rounded-lg border cursor-pointer transition-all text-center",
                                     "hover:bg-primary/5 hover:border-primary/30",
-                                    "text-sm",
+                                    "text-[min(1rem,3.5vw)] sm:text-base",
                                     field.value === option.value 
                                       ? "border-primary bg-primary/5 text-primary" 
                                       : "border-border/60 bg-background/50 text-muted-foreground"
@@ -447,7 +498,7 @@ export function ExternalLeadForm({
                           ))}
                         </RadioGroup>
                       </FormControl>
-                      <FormMessage className="text-xs" />
+                      <FormMessage className="text-[min(0.75rem,3vw)] sm:text-xs md:text-sm mt-[0.125rem] md:mt-1" />
                     </FormItem>
                   )}
                 />
@@ -462,15 +513,24 @@ export function ExternalLeadForm({
                         <div className="relative group">
                           <Input
                             {...field}
-                            className="h-10 pl-9 bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60" 
+                            className={cn(
+                              "bg-background/50 group-hover:bg-background/80 focus:bg-background transition-colors border-border/60",
+                              "h-[min(2.25rem,8vh)] md:h-11",
+                              "pl-[2.25rem] md:pl-11",
+                              "text-[min(1rem,3.5vw)] sm:text-base"
+                            )}
                             placeholder="Additional Notes (optional)"
                             value={typeof field.value === 'string' ? field.value : ''}
                             onChange={(e) => field.onChange(e.target.value || null)}
                           />
-                          <MessageSquare className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
+                          <MessageSquare className={cn(
+                            "absolute left-[0.625rem] md:left-3.5 top-1/2 -translate-y-1/2",
+                            "w-[min(1rem,3.5vw)] h-[min(1rem,3.5vw)] md:h-5 md:w-5",
+                            "text-muted-foreground/50"
+                          )} />
                         </div>
                       </FormControl>
-                      <FormMessage className="text-xs mt-1" />
+                      <FormMessage className="text-[min(0.75rem,3vw)] sm:text-xs md:text-sm mt-[0.125rem] md:mt-1" />
                     </FormItem>
                   )}
                 />
@@ -482,19 +542,23 @@ export function ExternalLeadForm({
               type="submit"
               disabled={submissionStatus === 'submitting'}
               className={cn(
-                "w-full h-10 font-medium rounded-lg",
-                "bg-primary hover:bg-primary/90 text-primary-foreground",
-                "shadow-md shadow-primary/10 hover:shadow-primary/20",
-                "transition-all duration-200"
+                "w-full font-medium rounded-lg",
+                "h-[min(2.25rem,8vh)] md:h-11",
+                "text-[min(1rem,3.5vw)] sm:text-base",
+                "bg-accent hover:bg-accent/90",
+                "text-accent-foreground",
+                "shadow-sm hover:shadow-md",
+                "transition-all duration-200",
+                "mt-[min(2vh,1rem)]"
               )}
             >
               {submissionStatus === 'submitting' ? (
                 <div className="flex items-center justify-center gap-2">
-                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  <span className="w-[min(0.875rem,3vw)] h-[min(0.875rem,3vw)] md:h-4 md:w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                   <span>Submitting...</span>
                 </div>
               ) : (
-                "Submit Lead"
+                "Get a Quote"
               )}
             </Button>
           </div>
