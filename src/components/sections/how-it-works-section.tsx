@@ -98,14 +98,13 @@ export function HowItWorksSection({
     <div className={cn(
       "relative w-full h-full",
       "flex items-center justify-center",
-      "landscape:justify-end landscape:pr-0",
-      "py-4"
+      "landscape:justify-end landscape:pr-0"
     )}>
       <div className={cn(
         "relative w-full",
         "max-w-[min(95vw,560px)]",
         "landscape:w-[50vh] landscape:h-[50vh]",
-        "aspect-[4/3]",
+        "h-[min(30vh,400px)]",
         "landscape:aspect-square",
         "rounded-2xl overflow-hidden",
         "bg-gradient-to-br from-primary/5 to-primary/10"
