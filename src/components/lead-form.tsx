@@ -256,12 +256,12 @@ export function ExternalLeadForm({
         <div className="rounded-xl bg-card shadow-lg border border-border/40">
           <div className={cn(
             "flex flex-col",
-            // Consistent padding on all sides
-            "p-[min(4vw,1.5rem)] sm:p-[min(3vw,1.75rem)] md:p-6"
+            "p-4 landscape:p-3 md:p-6",
+            "gap-4 landscape:gap-3 md:gap-6"
           )}>
             {/* Form Status Alerts */}
             {submissionStatus === 'success' && (
-              <Alert className="bg-green-500/10 text-green-500 border-green-500/20 py-[min(1.5vh,0.75rem)] mb-[min(3vh,1.25rem)]">
+              <Alert className="bg-green-500/10 text-green-500 border-green-500/20 py-2 landscape:py-1.5">
                 <CheckCircle2 className="w-[min(1.25rem,4vw)] h-[min(1.25rem,4vw)]" />
                 <AlertTitle className="text-[min(1rem,4vw)] sm:text-base md:text-lg">Success!</AlertTitle>
                 <AlertDescription className="text-[min(0.875rem,3.5vw)] sm:text-sm md:text-base">
@@ -271,7 +271,7 @@ export function ExternalLeadForm({
             )}
             
             {errorMessage && (
-              <Alert variant="destructive" className="py-[min(1.5vh,0.75rem)] mb-[min(3vh,1.25rem)]">
+              <Alert variant="destructive" className="py-2 landscape:py-1.5">
                 <AlertCircle className="w-[min(1.25rem,4vw)] h-[min(1.25rem,4vw)]" />
                 <AlertTitle className="text-[min(1rem,4vw)] sm:text-base md:text-lg">Error</AlertTitle>
                 <AlertDescription className="text-[min(0.875rem,3.5vw)] sm:text-sm md:text-base">{errorMessage}</AlertDescription>
@@ -279,21 +279,20 @@ export function ExternalLeadForm({
             )}
 
             {/* Main Form Grid */}
-            <div className="flex flex-col gap-[min(2vh,1rem)] landscape:gap-[min(1.5vh,0.75rem)]">
+            <div className="flex flex-col gap-4 landscape:gap-3 md:gap-6">
               {/* Contact Info */}
-              <div className="flex flex-col gap-[min(2vh,1rem)] landscape:gap-[min(1.5vh,0.75rem)]">
+              <div className="flex flex-col gap-4 landscape:gap-3 md:gap-6">
                 {/* Section Title */}
-                <div className="flex items-center gap-[0.5rem]">
+                <div className="flex items-center gap-2">
                   <h3 className={cn(
                     "font-medium text-muted-foreground",
-                    "text-[min(1rem,4vw)]",
-                    "sm:text-base md:text-lg"
+                    "text-base landscape:text-sm md:text-lg"
                   )}>Contact Info</h3>
                   <div className="flex-1 h-px bg-border/40" />
                 </div>
                 
                 {/* Name Fields */}
-                <div className="grid grid-cols-2 gap-[min(0.5rem,2vw)] sm:gap-3">
+                <div className="grid grid-cols-2 gap-2 landscape:gap-1.5 md:gap-3">
                   <FormField
                     control={form.control}
                     name="customer.first_name"
@@ -353,7 +352,7 @@ export function ExternalLeadForm({
                 </div>
 
                 {/* Contact Fields */}
-                <div className="grid grid-cols-2 gap-[min(0.5rem,2vw)] sm:gap-3">
+                <div className="grid grid-cols-2 gap-2 landscape:gap-1.5 md:gap-3">
                   <FormField
                     control={form.control}
                     name="customer.email"
@@ -453,13 +452,12 @@ export function ExternalLeadForm({
               </div>
 
               {/* Timeline and Notes */}
-              <div className="flex flex-col gap-[min(2vh,1rem)] landscape:gap-[min(1.5vh,0.75rem)]">
+              <div className="flex flex-col gap-4 landscape:gap-3 md:gap-6">
                 {/* Timeline Field */}
-                <div className="flex items-center gap-[0.5rem]">
+                <div className="flex items-center gap-2">
                   <h3 className={cn(
                     "font-medium text-muted-foreground",
-                    "text-[min(1rem,4vw)]",
-                    "sm:text-base md:text-lg"
+                    "text-base landscape:text-sm md:text-lg"
                   )}>When do you need it?</h3>
                   <div className="flex-1 h-px bg-border/40" />
                 </div>
@@ -543,13 +541,13 @@ export function ExternalLeadForm({
               disabled={submissionStatus === 'submitting'}
               className={cn(
                 "w-full font-medium rounded-lg",
-                "h-[min(2.25rem,8vh)] md:h-11",
-                "text-[min(1rem,3.5vw)] sm:text-base",
+                "h-10 landscape:h-9 md:h-11",
+                "text-base landscape:text-sm md:text-base",
                 "bg-accent hover:bg-accent/90",
                 "text-accent-foreground",
                 "shadow-sm hover:shadow-md",
                 "transition-all duration-200",
-                "mt-[min(2vh,1rem)]"
+                "mt-4 landscape:mt-3 md:mt-6"
               )}
             >
               {submissionStatus === 'submitting' ? (

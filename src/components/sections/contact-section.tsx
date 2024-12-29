@@ -23,27 +23,27 @@ export function ContactSection({
 }: ContactSectionProps) {
   return (
     <Section id="contact-section" className={cn(
-      "relative h-[calc(100dvh-64px)] bg-background",
+      "relative min-h-[calc(100dvh-64px)] bg-background",
       "flex items-center",
       "snap-start snap-always",
       "touch-manipulation",
-      "overflow-hidden",
+      "overflow-y-auto",
       "overscroll-none",
       "-webkit-overflow-scrolling-touch",
       className
     )}>
-      <Container className="h-full py-4 landscape:py-2">
+      <Container className="min-h-full py-6 landscape:py-4">
         <div className={cn(
-          "h-full w-full",
+          "min-h-full w-full",
           "grid grid-cols-1 landscape:grid-cols-[1fr,2fr]",
-          "gap-6 landscape:gap-4",
-          "px-3 landscape:px-3 sm:px-6",
+          "gap-6 landscape:gap-8 xl:gap-12",
+          "px-3 landscape:px-6 xl:px-8",
         )}>
           {/* Content Side */}
           <div className={cn(
             "flex flex-col justify-center",
             "text-center landscape:text-left",
-            "landscape:pr-4"
+            "landscape:pr-6 xl:pr-8"
           )}>
             <div className="space-y-2 landscape:space-y-1">
               <h2 className={cn(
@@ -67,7 +67,8 @@ export function ContactSection({
           {/* Form Side */}
           <div className={cn(
             "flex items-center",
-            "landscape:pl-4"
+            "landscape:pl-4",
+            "py-4 landscape:py-2"
           )}>
             <ExternalLeadForm apiKey={process.env.NEXT_PUBLIC_EXTERNAL_API_KEY || ''} />
           </div>

@@ -198,8 +198,8 @@ export function HeroSection({
           "h-full w-full",
           "max-w-7xl mx-auto",
           "grid grid-cols-1 landscape:grid-cols-[1.5fr_1fr]",
-          "items-center gap-6 landscape:gap-3",
-          "px-3 landscape:px-3 sm:px-6",
+          "gap-6 landscape:gap-8 xl:gap-12",
+          "px-3 landscape:px-6 xl:px-8",
           "relative"
         )}>
           {layout === "default" ? (

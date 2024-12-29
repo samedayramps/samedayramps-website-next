@@ -106,8 +106,8 @@ export function FAQSection({
           "h-full w-full",
           "max-w-7xl mx-auto",
           "grid grid-cols-1 landscape:grid-cols-[1fr_1.5fr]",
-          "items-center gap-6 landscape:gap-3",
-          "px-3 landscape:px-3 sm:px-6",
+          "gap-6 landscape:gap-8 xl:gap-12",
+          "px-3 landscape:px-6 xl:px-8",
           "relative"
         )}>
           <div className="order-2 landscape:order-1">{mediaSection}</div>
