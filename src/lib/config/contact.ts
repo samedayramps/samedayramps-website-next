@@ -1,7 +1,7 @@
 export const contactConfig = {
   wheelchairRamps: {
-    title: "Get Your Free Quote",
-    subtitle: "Fill out the form below and we'll get back to you within 24 hours with a custom quote.",
+    title: "Get A Quote",
+    subtitle: "Fill out the form below.",
     media: {
       src: "/ramp5.webp",
       alt: "Professional wheelchair ramp installation team"

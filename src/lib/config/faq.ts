@@ -1,6 +1,6 @@
 export const faqConfig = {
   wheelchairRamps: {
-    title: "Frequently Asked Questions",
+    title: "Have Questions?",
     faqs: [
       {
         question: "How long does installation take?",
