@@ -22,11 +22,17 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { HOME_PAGE } from "@/constants/content"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 // Form validation schema
 const leadFormSchema = z.object({
@@ -466,35 +472,32 @@ export function ExternalLeadForm({
                   control={form.control}
                   name="timeline"
                   render={({ field }) => (
-                    <FormItem className="space-y-[min(1vh,0.5rem)]">
+                    <FormItem>
                       <FormControl>
-                        <RadioGroup
+                        <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value || undefined}
-                          className="grid grid-cols-2 gap-[min(0.5rem,2vw)] sm:gap-3"
                         >
-                          {HOME_PAGE.form.timeline.options.map((option) => (
-                            <FormItem key={option.value}>
-                              <FormControl>
-                                <label
-                                  className={cn(
-                                    "flex items-center justify-center w-full",
-                                    "h-[min(2.25rem,8vh)] md:h-11",
-                                    "rounded-lg border cursor-pointer transition-all text-center",
-                                    "hover:bg-primary/5 hover:border-primary/30",
-                                    "text-[min(1rem,3.5vw)] sm:text-base",
-                                    field.value === option.value 
-                                      ? "border-primary bg-primary/5 text-primary" 
-                                      : "border-border/60 bg-background/50 text-muted-foreground"
-                                  )}
-                                >
-                                  <RadioGroupItem value={option.value} className="sr-only" />
-                                  {option.label}
-                                </label>
-                              </FormControl>
-                            </FormItem>
-                          ))}
-                        </RadioGroup>
+                          <SelectTrigger className={cn(
+                            "bg-background/50 hover:bg-background/80 focus:bg-background transition-colors border-border/60",
+                            "h-[min(2.25rem,8vh)] md:h-11",
+                            "text-[min(1rem,3.5vw)] sm:text-base",
+                            "text-muted-foreground/60"
+                          )}>
+                            <SelectValue placeholder="Select a timeframe" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {HOME_PAGE.form.timeline.options.map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                                className="text-[min(1rem,3.5vw)] sm:text-base"
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage className="text-[min(0.75rem,3vw)] sm:text-xs md:text-sm mt-[0.125rem] md:mt-1" />
                     </FormItem>

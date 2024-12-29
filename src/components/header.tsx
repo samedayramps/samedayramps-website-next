@@ -170,10 +170,9 @@ export function Header() {
                   variant="ghost" 
                   className={cn(
                     "!h-14 !w-14",
-                    "hover:bg-primary-foreground/10",
                     "focus-visible:outline-none focus-visible:ring-2",
                     "focus-visible:ring-ring focus-visible:ring-offset-2",
-                    "active:scale-95",
+                    "active:scale-90",
                     "transition-all duration-200",
                     "[&_svg]:!h-8 [&_svg]:!w-8"
                   )}
