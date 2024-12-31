@@ -1,5 +1,6 @@
 "use client"
 
+import { forwardRef } from "react"
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { VideoPlayer } from "@/components/ui/video-player";
@@ -43,12 +44,12 @@ interface HeroSectionProps {
   theme?: "light" | "dark";
 }
 
-export function HeroSection({ 
+export const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(({
   content,
   className,
   layout = "default",
   theme = "light",
-}: HeroSectionProps) {
+}, ref) => {
   const handleCtaClick = (href: string) => {
     const targetSection = document.getElementById(href);
     targetSection?.scrollIntoView({ behavior: 'smooth' });
@@ -184,7 +185,7 @@ export function HeroSection({
   );
 
   return (
-    <Section className={cn(
+    <Section ref={ref} className={cn(
       "relative h-[calc(100dvh-64px)] bg-background",
       "flex items-center",
       "snap-start snap-always",
@@ -218,4 +219,6 @@ export function HeroSection({
       </Container>
     </Section>
   );
-} 
+})
+
+HeroSection.displayName = "HeroSection" 

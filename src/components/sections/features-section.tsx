@@ -1,31 +1,32 @@
 "use client"
 
-import { Section } from "@/components/ui/section";
-import { Container } from "@/components/ui/container";
-import { Check } from "lucide-react";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { forwardRef } from "react"
+import { Section } from "@/components/ui/section"
+import { Container } from "@/components/ui/container"
+import { Check } from "lucide-react"
+import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 interface FeaturesContent {
-  title: string;
-  features: string[];
+  title: string
+  features: string[]
   media: {
-    src: string;
-    alt: string;
-  };
+    src: string
+    alt: string
+  }
 }
 
 interface FeaturesSectionProps {
-  content: FeaturesContent;
-  className?: string;
-  theme?: "light" | "dark";
+  content: FeaturesContent
+  className?: string
+  theme?: "light" | "dark"
 }
 
-export function FeaturesSection({
+export const FeaturesSection = forwardRef<HTMLElement, FeaturesSectionProps>(({
   content,
   className,
   theme = "light"
-}: FeaturesSectionProps) {
+}, ref) => {
   const contentSection = (
     <div className={cn(
       "flex flex-col justify-center",
@@ -62,7 +63,7 @@ export function FeaturesSection({
         ))}
       </ul>
     </div>
-  );
+  )
 
   const mediaSection = (
     <div className={cn(
@@ -92,10 +93,10 @@ export function FeaturesSection({
         <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
       </div>
     </div>
-  );
+  )
 
   return (
-    <Section id="features-section" className={cn(
+    <Section ref={ref} className={cn(
       "relative h-[calc(100dvh-64px)] bg-background",
       "flex items-center",
       "snap-start snap-always",
@@ -119,5 +120,7 @@ export function FeaturesSection({
         </div>
       </Container>
     </Section>
-  );
-} 
+  )
+})
+
+FeaturesSection.displayName = "FeaturesSection" 

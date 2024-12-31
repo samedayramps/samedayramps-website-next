@@ -1,5 +1,6 @@
 "use client"
 
+import { forwardRef } from "react"
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { FAQList } from "@/components/ui/faq-list";
@@ -24,11 +25,11 @@ interface FAQSectionProps {
   theme?: "light" | "dark";
 }
 
-export function FAQSection({
+export const FAQSection = forwardRef<HTMLElement, FAQSectionProps>(({
   content,
   className,
   theme = "light"
-}: FAQSectionProps) {
+}, ref) => {
   const contentSection = (
     <div className={cn(
       "flex flex-col justify-center",
@@ -92,7 +93,7 @@ export function FAQSection({
   );
 
   return (
-    <Section id="faq-section" className={cn(
+    <Section ref={ref} className={cn(
       "relative h-[calc(100dvh-64px)] bg-background",
       "flex items-center",
       "snap-start snap-always",
@@ -117,4 +118,6 @@ export function FAQSection({
       </Container>
     </Section>
   );
-} 
+});
+
+FAQSection.displayName = "FAQSection"; 

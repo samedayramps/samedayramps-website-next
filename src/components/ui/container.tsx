@@ -2,17 +2,28 @@ import { cn } from "@/lib/utils";
 import { type VariantProps, cva } from "class-variance-authority";
 
 const containerVariants = cva(
-  "w-full mx-auto px-4 sm:px-6 md:px-8",
+  "w-full mx-auto",
   {
     variants: {
       size: {
-        small: "max-w-2xl landscape:max-w-[50vw]",
-        medium: "max-w-4xl landscape:max-w-[70vw]",
-        large: "max-w-screen-xl landscape:max-w-[90vw]",
+        small: "max-w-3xl landscape:max-w-4xl",
+        default: "max-w-5xl landscape:max-w-6xl",
+        large: "max-w-7xl",
+      },
+      padding: {
+        none: "px-0",
+        default: "px-4 sm:px-6 lg:px-8",
+        tight: "px-3 sm:px-4 lg:px-6",
+      },
+      height: {
+        auto: "h-auto",
+        full: "h-full",
       }
     },
     defaultVariants: {
-      size: "large"
+      size: "default",
+      padding: "default",
+      height: "auto"
     }
   }
 );
@@ -25,11 +36,13 @@ export function Container({
   children, 
   className,
   size,
+  padding,
+  height,
   ...props 
 }: ContainerProps) {
   return (
     <div 
-      className={cn(containerVariants({ size }), className)} 
+      className={cn(containerVariants({ size, padding, height }), className)} 
       {...props}
     >
       {children}

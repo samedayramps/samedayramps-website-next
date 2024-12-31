@@ -1,5 +1,6 @@
 "use client"
 
+import { forwardRef } from "react"
 import { Section } from "@/components/ui/section";
 import { Container } from "@/components/ui/container";
 import { ExternalLeadForm } from "@/components/lead-form";
@@ -16,13 +17,13 @@ interface ContactSectionProps {
   theme?: "light" | "dark";
 }
 
-export function ContactSection({
+export const ContactSection = forwardRef<HTMLElement, ContactSectionProps>(({
   content,
   className,
   theme = "light"
-}: ContactSectionProps) {
+}, ref) => {
   return (
-    <Section id="contact-section" className={cn(
+    <Section ref={ref} className={cn(
       "relative bg-background",
       className
     )}>
@@ -64,4 +65,6 @@ export function ContactSection({
       </Container>
     </Section>
   );
-} 
+})
+
+ContactSection.displayName = "ContactSection" 
